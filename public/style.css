@@ -1,0 +1,70 @@
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #ece9e9;
+}
+
+.nav-link {
+    text-transform: uppercase;
+    font-weight: 400;
+}
+.card {
+    background: #fad6a5;
+}
+h1 {
+    color: #28a745;
+    font-size: 35px;
+    font-weight: 700;
+    margin-top: 70px;
+}
+
+h4 {
+    color: #28a745;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+#name {
+    color: black;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.info {
+    color: black;
+    font-weight: 400;
+    font-size: 19px;
+}
+
+.login {
+    color: #28a745;
+    font-size: 35px;
+}
+
+.details-item {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+}
+
+.details-item:hover {
+    cursor: pointer;
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+}
+
+
+input[type=search] {
+    
+    color: #28a745;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #28a745;
+}
+
+input[type=search]::placeholder {
+    color: #28a745;
+}
