@@ -20,7 +20,7 @@
                     </div>
                 <% } %>
                     
-                    <form action="/preachers" method="POST" id="form">
+                    <form action="/preachers" method="POST" id="form4">
                        
                         <div class="form-floating mb-3">
                        
@@ -39,12 +39,11 @@
             
         </div>
     </div>
-</div>
-</div>
+
 
 <script src="/script.js"></script>
 <script>
-    document.getElementById("form").addEventListener("submit", function(){
+    document.getElementById("form4").addEventListener("submit", function(){
         document.getElementById("send").setAttribute("disabled", "disabled");
         document.getElementById("send").innerText = `Dodawanie...`;
     })

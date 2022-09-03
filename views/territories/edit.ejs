@@ -3,7 +3,7 @@
 <div class="col-lg-6 col-md-12" id="form" style="height:100%">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-12" style="margin-top: 4%">
-            <div id="form1">
+            <div id="form1" style="height:100%">
                 <a href="/territories/available">
                     <i class="fas fa-arrow-left"></i>
                     Wróć do strony z wolnymi terenami
@@ -20,7 +20,7 @@
                     </div>
                 <% } %>
                     
-                        <form action="/territories/<%= territory._id %>?_method=PUT" method="post" id="form">
+                        <form action="/territories/<%= territory._id %>?_method=PUT" method="post" id="form4">
                             
                             
                             <div class="form-floating mb-3">
@@ -32,21 +32,37 @@
                                 </label>
                                 
                             </div>
+
+                            <div class="form-floating mb-3">
+                       
+                                <select name="territory[kind]" id="kind" class="form-control">
+                                    <option value="<%= territory.kind %>"><%= territory.kind %></option>
+                                    <option value="city">Teren miejski</option>
+                                    <option value="village">Teren wiejski</option>
+                                    <option value="market">Teren handlowy</option>
+                                    
+                                </select>
+                                <label for="preacher" class="username">
+                                    Edytuj rodzaj terenu
+                                    
+                                </label>
+                                
+                            </div>
                            
                             <div class="form-floating mb-3">
                        
                                 <input type="text" name="territory[city]" id="city" value="<%= territory.city %>" placeholder="Miejscowość" class="form-control">
-                                <label for="city" class="username">
+                                <label for="city" class="username" id="cityLabel">
                                     Edytuj miejscowość
                                     
                                 </label>
                                 
                             </div>
                           
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="streetDiv">
                        
                                 <input type="text" name="territory[street]" id="street" value="<%= territory.street %>" placeholder="Ulica" class="form-control">
-                                <label for="street" class="username">
+                                <label for="street" class="username" id="streetLabel">
                                     Edytuj ulicę
                                     
                                 </label>
@@ -54,7 +70,7 @@
                             </div>
                             
                             
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="beginNumberDiv">
                        
                                 <input type="number" name="territory[beginNumber]" id="beginNumber" value="<%= territory.beginNumber %>" placeholder="Numer początkowy" class="form-control">
                                 <label for="beginNumber" class="username">
@@ -65,7 +81,7 @@
                             </div>
                             
                           
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="endNumberDiv">
                        
                                 <input type="number" name="territory[endNumber]" id="endNumber" value="<%= territory.endNumber %>" placeholder="Numer końcowy" class="form-control">
                                 <label for="endNumber" class="username">
@@ -77,7 +93,7 @@
                             
                             <div class="form-floating mb-3">
                        
-                                <input type="date" name="territory[lastWorked]" id="lastWorked" value="<%= new Date(territory.lastWorked).toLocaleDateString() %>" class="form-control">
+                                <input type="date" name="territory[lastWorked]" id="lastWorked" value="<%= territory.lastWorked %>" class="form-control">
                                 <label for="lastWorked" class="username">
                                     Edytuj datę ostatnio pracowane
                                     
@@ -144,15 +160,61 @@
                 
             </div>
         </div>
-    </div>
-</div>
+
       
     <script src="/script.js"></script>
     <script>
-        document.getElementById("form").addEventListener("submit", function(){
-			document.getElementById("send").setAttribute("disabled", "disabled");
-			document.getElementById("send").innerText = `Edytowanie...`;
-    	})
+        let streetDiv = document.getElementById("streetDiv");
+    let beginNumberDiv = document.getElementById("beginNumberDiv");
+    let endNumberDiv = document.getElementById("endNumberDiv");
+    let streetLabel = document.getElementById("streetLabel");
+    let cityLabel = document.getElementById("cityLabel");
+    let kindSelect = document.getElementById("kind");
+
+    streetDiv.style.display = "none";
+    beginNumberDiv.style.display = "none";
+    endNumberDiv.style.display = "none";
+
+    if(kindSelect.value === "city"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "block";
+            endNumberDiv.style.display = "block";
+    } else if(kindSelect.value === "village") {
+            streetDiv.style.display = "none";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            cityLabel.innerHTML = `Edytuj miejscowość (ci)`;
+    } else if(kindSelect.value === "market"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            streetLabel.innerText = "Edytuj ulicę (e)"
+            cityLabel.innerHTML = `Edytuj miejscowość`;
+    }
+
+    document.getElementById("form4").addEventListener("submit", function(){
+        document.getElementById("send").setAttribute("disabled", "disabled");
+        document.getElementById("send").innerText = `Edytowanie...`;
+    })
+
+    kindSelect.addEventListener('change', (event) => {
+        if(event.target.value === "city"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "block";
+            endNumberDiv.style.display = "block";
+        } else if(event.target.value === "village") {
+            streetDiv.style.display = "none";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            cityLabel.innerHTML = `Edytuj miejscowość (ci)`;
+        } else if(event.target.value === "market"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            streetLabel.innerText = "Edytuj ulicę (e)"
+            cityLabel.innerHTML = `Edytuj miejscowość`;
+        }
+    })
     </script>    
 </body>
 </html>

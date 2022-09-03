@@ -16,12 +16,12 @@
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-success">
         <div class="container">
         <a href="/territories/available" class="navbar-brand"><i class="fas fa-map-marked-alt"></i> Territory Manager</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="border:none;">
-        <span class="navbar-toggler-icon" style="color:#FBFA04"></span>
-      </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation" style="border: none">
+            <span class="navbar-toggler-icon"></span>
+          </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto text-center">
+        <ul class="navbar-nav ms-auto text-center">
             <% if(typeof home !== 'undefined'){ %>
                 <li class="nav-item">
                     <a class="nav-link active" href="/territories/available">Home</a>
@@ -34,33 +34,14 @@
            
             <% if(typeof all !== 'undefined'){ %>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/territories">Wszystkie tereny</a>
+                    <a class="nav-link active" href="/territories">Tereny</a>
                 </li>
             <% } else { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="/territories">Wszystkie tereny</a>
+                    <a class="nav-link" href="/territories">Tereny</a>
                 </li>
             <% } %>
-           
-            <% if(typeof newT !== 'undefined'){ %>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/territories/new">Dodaj teren</a>
-                </li>
-            <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/territories/new">Dodaj teren</a>
-                </li>
-            <% } %>
-            
-            <% if(typeof newP !== 'undefined'){ %>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/preachers/new">Dodaj głosiciela</a>
-                </li>
-            <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/preachers/new">Dodaj głosiciela</a>
-                </li>
-            <% } %>
+        
             
             <% if(typeof pre !== 'undefined'){ %>
                 <li class="nav-item">
@@ -71,7 +52,7 @@
                     <a class="nav-link" href="/preachers">Głosiciele</a>
                 </li>
             <% } %>
-           
+    
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Wyloguj</a>
                         

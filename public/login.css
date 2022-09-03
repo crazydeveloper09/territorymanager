@@ -1,8 +1,6 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  width: 100vw;
-  height: 100vh;
   background: #28a745;
 }
 #info {
@@ -20,6 +18,10 @@ a {
   font-size: 20px;
   color:  #1a1a1a;
 }
+
+::-webkit-scrollbar { 
+  width: 0px!important;
+} 
 
 .form-control:focus,
 .form-select:focus {

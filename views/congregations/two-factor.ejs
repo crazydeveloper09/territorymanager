@@ -16,7 +16,7 @@
                     </div>
                 <% } %>
                 <% if(typeof user !== 'undefined'){ %>
-                    <form action="/congregations/<%= user._id %>/two-factor" method="post" id="form">
+                    <form action="/congregations/<%= user._id %>/two-factor" method="post" id="form4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="code" id="code" placeholder="123523" aria-label="Kod weryfikacyjny" aria-describedby="basic-addon1" required>
                             <label for="code" class="username">
@@ -25,15 +25,15 @@
                             </label>
                             
                         </div>  
-                        <input type="submit" value="Zweryfikuj konto" class="btn button btn-golden" id="send">
+                        <input type="submit" value="Zweryfikuj konto" class="btn button btn-green" id="send">
                        
                     </form>
                     <form action="/congregations/<%= user._id %>/resend/two-factor" method="post">
-                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-green">
+                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
                     </form>
                 <% } else { %>
                     <form action="/congregations/<%= user_id %>/resend/two-factor" method="post">
-                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-green">
+                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
                     </form>
                 <% } %>
                 
@@ -44,7 +44,7 @@
     </div>
 </div>
 <script>
-    document.getElementById("form").addEventListener("submit", () => {
+    document.getElementById("form4").addEventListener("submit", () => {
         document.getElementById("send").setAttribute("disabled", "disabled");
         document.getElementById("send").value = "Weryfikowanie...";
     })

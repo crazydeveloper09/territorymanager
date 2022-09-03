@@ -18,7 +18,7 @@
                                         <%= success %>
                                     </div>
                                 <% } %>
-                                <form action="/congregations" method="post" id="form">
+                                <form action="/congregations" method="post" id="form4">
                                     
                                         <div class="form-floating mb-3">
                        
@@ -81,12 +81,11 @@
                         
                     </div>
                 </div>
-            </div>
-        </div>
+            
         
 		<script src="/script.js"></script>
         <script>
-            document.getElementById("form").addEventListener("submit", function(){
+            document.getElementById("form4").addEventListener("submit", function(){
                 document.getElementById("send").setAttribute("disabled", "disabled");
                 document.getElementById("send").innerText = `Rejestrowanie...`;
             })

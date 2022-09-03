@@ -1,8 +1,10 @@
+
 const express = require("express"),
     router              = express.Router({mergeParams: true}),
     app                 = express(),
     Preacher               = require("../models/preacher"),
     Territory                = require("../models/territory"),
+    Checkout                = require("../models/checkout"),
     flash               = require("connect-flash"),
     methodOverride      = require("method-override");
 
@@ -63,128 +65,6 @@ router.get("/new", isLoggedIn, function(req, res){
             });
         }
     })
-	
-});
-
-router.post("/", isLoggedIn, function(req, res){
-    
-    if(req.body.preacher === ""){
-        let newTerritory = new Territory({
-            city: req.body.city, 
-            street: req.body.street, 
-            lastWorked: req.body.lastP,
-            beginNumber: req.body.beginNumber,
-            endNumber: req.body.endNumber,
-            taken: req.body.taken,
-            description: req.body.description,
-            forbidden: req.body.forbidden,
-            number: req.body.number,
-            congregation: req.user._id
-        });
-        console.log(newTerritory);
-        Territory.create(newTerritory, function(err, createdTerritory){
-            if(err){
-                console.log(err);
-            } else {
-                
-                createdTerritory.type="free";
-                createdTerritory.save();
-                res.redirect("/territories/available");
-            }
-        })
-    } else {
-        let newTerritory = new Territory({
-            city: req.body.city, 
-            street: req.body.street, 
-            lastWorked: req.body.lastP,
-            beginNumber: req.body.beginNumber,
-            endNumber: req.body.endNumber,
-            taken: req.body.taken,
-            description: req.body.description,
-            forbidden: req.body.forbidden,
-            number: req.body.number,
-            congregation: req.user._id
-        });
-        Preacher.findById(req.body.preacher, function(err, preacher){
-            if(err){
-                console.log(err);
-            } else {
-                Territory.create(newTerritory, function(err, createdTerritory){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        createdTerritory.preacher = preacher._id;
-                        createdTerritory.save();
-                        res.redirect("/territories/available");
-                    }
-                })
-            }
-        });
-    }
-});
-
-router.get("/:territory_id/edit", isLoggedIn, function(req, res){
-    Territory.findById(req.params.territory_id).populate("preacher").exec(function(err, territory){
-        if(err){
-            console.log(err);
-        } else {
-            Preacher.find({congregation: req.user._id}, function(err, preachers){
-                if(err){
-                    console.log(err);
-                } else {
-                    res.render("./territories/edit", { 
-                        currentUser: req.user, 
-                        territory: territory, 
-                        preachers: preachers, 
-                        header: `Edytuj teren nr ${territory.number} zboru ${req.user.username} | Territory Manager`
-                    });
-                }
-            });
-            
-        }
-    });
-	
-});
-
-router.put("/:territory_id", isLoggedIn, function(req, res){
-    
-    Territory.findById(req.params.territory_id, function(err, territory){
-        if(err){
-            console.log(err);
-        } else {
-            territory.city = req.body.territory.city;
-            territory.street = req.body.territory.street;
-            territory.number = req.body.territory.number;
-            territory.description = req.body.territory.description;
-            territory.taken = req.body.territory.taken;
-            territory.beginNumber = req.body.territory.beginNumber;
-            territory.endNumber = req.body.territory.endNumber;
-            territory.lastWorked = req.body.territory.lastWorked;
-            territory.forbidden = req.body.territory.forbidden;
-            
-            if(req.body.territory.preacher === ""){
-                territory.preacher = undefined;
-                territory.type = "free";
-            } else {
-                territory.preacher = req.body.territory.preacher;
-                territory.type = undefined;
-            }
-            territory.save();
-            res.redirect("/territories");
-        }
-    });
-	
-});
-
-router.get("/:territory_id/delete", isLoggedIn, function(req, res){
-    Territory.findByIdAndDelete(req.params.territory_id, function(err, territory){
-        if(err){
-            console.log(err);
-        } else {
-            
-            res.redirect("/territories");
-        }
-    });
 	
 });
 
@@ -281,8 +161,177 @@ router.get("/search", isLoggedIn, function(req, res){
                 });
             }
         });
+    } else if(req.query.kind !== 'undefined'){
+        
+               
+                Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        Preacher.find({congregation: req.user._id}, function(err, preachers){
+                            if(err){
+                                console.log(err);
+                            } else {
+                                
+                                res.render("./territories/search", {
+                                    param: req.query.kind, 
+                                    territories: territories,
+                                    currentUser: req.user, 
+                                    preachers: preachers,
+                                    header: "Wyszukiwanie terenów po rodzaju terenu | Territory Manager"
+                                });
+                            }
+                        });
+                    }
+                });
+        
     }
 })
+
+
+
+router.post("/", isLoggedIn, function(req, res){
+    
+    if(req.body.preacher === ""){
+        let newTerritory = new Territory({
+            city: req.body.city, 
+            street: req.body.street, 
+            lastWorked: req.body.lastP,
+            beginNumber: req.body.beginNumber,
+            endNumber: req.body.endNumber,
+            taken: req.body.taken,
+            description: req.body.description,
+            forbidden: req.body.forbidden,
+            number: req.body.number,
+            kid: req.body.kind,
+            congregation: req.user._id
+        });
+        console.log(newTerritory);
+        Territory.create(newTerritory, function(err, createdTerritory){
+            if(err){
+                console.log(err);
+            } else {
+                
+                createdTerritory.type="free";
+                createdTerritory.save();
+                res.redirect("/territories/available");
+            }
+        })
+    } else {
+        let newTerritory = new Territory({
+            city: req.body.city, 
+            street: req.body.street, 
+            lastWorked: req.body.lastP,
+            beginNumber: req.body.beginNumber,
+            endNumber: req.body.endNumber,
+            taken: req.body.taken,
+            description: req.body.description,
+            forbidden: req.body.forbidden,
+            number: req.body.number,
+            kind: req.body.kind,
+            congregation: req.user._id
+        });
+        Preacher.findById(req.body.preacher, function(err, preacher){
+            if(err){
+                console.log(err);
+            } else {
+                Territory.create(newTerritory, function(err, createdTerritory){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        createdTerritory.preacher = preacher._id;
+                        createdTerritory.save();
+                        res.redirect("/territories/available");
+                    }
+                })
+            }
+        });
+    }
+});
+
+router.get("/:territory_id/edit", isLoggedIn, function(req, res){
+    Territory.findById(req.params.territory_id).populate("preacher").exec(function(err, territory){
+        if(err){
+            console.log(err);
+        } else {
+            Preacher.find({congregation: req.user._id}, function(err, preachers){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.render("./territories/edit", { 
+                        currentUser: req.user, 
+                        territory: territory, 
+                        preachers: preachers, 
+                        header: `Edytuj teren nr ${territory.number} zboru ${req.user.username} | Territory Manager`
+                    });
+                }
+            });
+            
+        }
+    });
+	
+});
+
+router.get("/:territory_id", isLoggedIn, function(req, res){
+    
+    Territory.findById(req.params.territory_id).populate(["preacher", "history"]).exec(function(err, territory){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("./territories/show", {
+                header: `Teren nr ${territory.number} | Territory Manager`,
+                territory: territory
+            })
+        }
+    });
+	
+});
+
+router.put("/:territory_id", isLoggedIn, function(req, res){
+    
+    Territory.findById(req.params.territory_id).populate("preacher").exec(function(err, territory){
+        if(err){
+            console.log(err);
+        } else {
+            Checkout.create({ record: territory}, (err, createdCheckout) => {
+                territory.history.push(createdCheckout);
+                territory.city = req.body.territory.city;
+                territory.street = req.body.territory.street;
+                territory.number = req.body.territory.number;
+                territory.description = req.body.territory.description;
+                territory.taken = req.body.territory.taken;
+                territory.beginNumber = req.body.territory.beginNumber;
+                territory.endNumber = req.body.territory.endNumber;
+                territory.lastWorked = req.body.territory.lastWorked;
+                territory.forbidden = req.body.territory.forbidden;
+                territory.kind = req.body.territory.kind;
+                
+                if(req.body.territory.preacher === ""){
+                    territory.preacher = undefined;
+                    territory.type = "free";
+                } else {
+                    territory.preacher = req.body.territory.preacher;
+                    territory.type = undefined;
+                }
+                territory.save();
+                res.redirect("/territories");
+            })
+        }
+    });
+	
+});
+
+router.get("/:territory_id/delete", isLoggedIn, function(req, res){
+    Territory.findByIdAndDelete(req.params.territory_id, function(err, territory){
+        if(err){
+            console.log(err);
+        } else {
+            
+            res.redirect("/territories");
+        }
+    });
+	
+});
 
 
 router.get("/available/search", isLoggedIn, function(req, res){
@@ -325,6 +374,20 @@ router.get("/available/search", isLoggedIn, function(req, res){
             } else {
                 res.render("./territories/availableSearch", {
                     param: req.query.number, 
+                    territories: territories, 
+                    currentUser: req.user, 
+                    header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"
+                });
+            
+            }
+        });
+    } else if(req.query.kind !== 'undefined'){
+        Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}, {type: 'free'}]}).populate("preacher").exec(function(err, territories){
+            if(err){
+                console.log(err);
+            } else {
+                res.render("./territories/availableSearch", {
+                    param: req.query.kind, 
                     territories: territories, 
                     currentUser: req.user, 
                     header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"

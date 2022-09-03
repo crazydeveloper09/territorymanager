@@ -20,7 +20,7 @@
                     </div>
                 <% } %>
                     
-                        <form action="/territories" method="post" id="form">
+                        <form action="/territories" method="post" id="form4">
                             
                             <div class="form-floating mb-3">
                        
@@ -32,11 +32,26 @@
                                 
                             </div>
                             
+                            <div class="form-floating mb-3">
+                       
+                                <select name="kind" id="kind" class="form-control">
+                                    <option value="">Rodzaj terenu</option>
+                                    <option value="city">Teren miejski</option>
+                                    <option value="village">Teren wiejski</option>
+                                    <option value="market">Teren handlowy</option>
+                                    
+                                </select>
+                                <label for="preacher" class="username">
+                                    Wybierz rodzaj terenu
+                                    
+                                </label>
+                                
+                            </div>
                            
                             <div class="form-floating mb-3">
                        
                                 <input type="text" name="city" id="city" autocomplete="off" placeholder="Miejscowość" class="form-control" required>
-                                <label for="city" class="username">
+                                <label for="city" class="username" id="cityLabel">
                                     Miejscowość <span class="text-danger" style="font-size: 13px;">*wymagane</span>
                                     
                                 </label>
@@ -44,10 +59,10 @@
                             </div>
                            
                            
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="streetDiv">
                        
                                 <input type="text" name="street" id="street" autocomplete="off" placeholder="Ulica" class="form-control">
-                                <label for="street" class="username">
+                                <label for="street" class="username" id="streetLabel">
                                    Ulica
                                     
                                 </label>
@@ -55,7 +70,7 @@
                             </div>
                             
                            
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="beginNumberDiv">
                        
                                 <input type="number" name="beginNumber" id="beginNumber" autocomplete="off" placeholder="Numer początkowy" class="form-control">
                                 <label for="beginNumber" class="username">
@@ -64,7 +79,7 @@
                                 </label>
                                 
                             </div>
-                            <div class="form-floating mb-3">
+                            <div class="form-floating mb-3" id="endNumberDiv">
                        
                                 <input type="number" name="endNumber" id="endNumber" autocomplete="off" placeholder="Numer końcowy" class="form-control">
                                 <label for="endNumber" class="username">
@@ -137,14 +152,41 @@
                 
             </div>
         </div>
-    </div>
-</div>
-
+   
 <script src="/script.js"></script>
 <script>
-    document.getElementById("form").addEventListener("submit", function(){
+    let streetDiv = document.getElementById("streetDiv");
+    let beginNumberDiv = document.getElementById("beginNumberDiv");
+    let endNumberDiv = document.getElementById("endNumberDiv");
+    let streetLabel = document.getElementById("streetLabel");
+    let cityLabel = document.getElementById("cityLabel");
+
+    streetDiv.style.display = "none";
+    beginNumberDiv.style.display = "none";
+    endNumberDiv.style.display = "none";
+
+    document.getElementById("form4").addEventListener("submit", function(){
         document.getElementById("send").setAttribute("disabled", "disabled");
         document.getElementById("send").innerText = `Dodawanie...`;
+    })
+
+    document.getElementById("kind").addEventListener('change', (event) => {
+        if(event.target.value === "city"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "block";
+            endNumberDiv.style.display = "block";
+        } else if(event.target.value === "village") {
+            streetDiv.style.display = "none";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            cityLabel.innerHTML = `Miejscowość (ci po przecinku) <span class="text-danger" style="font-size: 13px;">*wymagane</span>`;
+        } else if(event.target.value === "market"){
+            streetDiv.style.display = "block";
+            beginNumberDiv.style.display = "none";
+            endNumberDiv.style.display = "none";
+            streetLabel.innerText = "Ulica (e po przecinku)"
+            cityLabel.innerHTML = `Miejscowość <span class="text-danger" style="font-size: 13px;">*wymagane</span`;
+        }
     })
 </script>    
 </body>

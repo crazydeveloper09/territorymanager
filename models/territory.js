@@ -7,6 +7,7 @@ const territorySchema = new mongoose.Schema({
     number: Number,
     beginNumber: Number,
     endNumber: Number,
+    kind: String,
     preacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Preacher"
@@ -15,6 +16,10 @@ const territorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Congregation"
     },
+    history: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Checkout"
+    }],
     type: String,
     taken: String,
     description: String,

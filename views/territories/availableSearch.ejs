@@ -26,6 +26,9 @@
                                 <li>
                                     <a class="dropdown-item" id="number">Nr terenu</a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" id="kind">Rodzaj terenu</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -63,7 +66,20 @@
                                 </form>
                         </div>
                         
-                   
+                        <div id="kindSearch">
+                            <br>
+                                <form action="/territories/available/search" method="get">
+                                    <div class="input-group mb-3">
+                                        <select name="kind" class="form-select">
+                                            <option value="<%= param %>"><%= param %></option>
+                                            <option value="city">Teren miejski</option>
+                                            <option value="village">Teren wiejski</option>
+                                            <option value="market">Teren handlowy</option>
+                                        </select>
+                                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </form>
+                        </div>
                     
                 </div>
                 
@@ -86,7 +102,7 @@
                 <% for(let i=territories.length-1;i>=0;i--){ %>
                     
                     <div class="col-lg-6 col-md-12">
-                            <div class="card">
+                            <div class="card <%= territories[i].kind %>">
                                 <div class="card-title text-center" id="name">
                                     <br>
                                     Karta terenu nr <%= territories[i].number %>
@@ -142,6 +158,7 @@
                                             </strong></p>
                                         <% } %>
                                         <div class="d-inline">
+                                            <a href="/territories/<%= territories[i]._id %>" class="btn btn-success">Zobacz historię</a>
                                                 <a href="/territories/<%= territories[i]._id %>/edit" class="btn btn-primary">Edytuj</a>
                                                 <a href="/territories/<%= territories[i]._id %>/delete" class="btn btn-danger">Usuń</a>
                                             </div>
@@ -158,34 +175,46 @@
         <% } %>
     </div>      
     <script>
-        let cityButton = document.getElementById("city");
-        let streetButton = document.getElementById("street");
-        let numberButton = document.getElementById("number");
-        let citySearch = document.getElementById("citySearch");
-        let streetSearch = document.getElementById("streetSearch");
-        let numberSearch = document.getElementById("numberSearch");
-
-        citySearch.style.display = "none";
-        streetSearch.style.display = "none";
-        numberSearch.style.display = "none";
-        
-
-        cityButton.addEventListener("click", function(){
-            citySearch.style.display = "block";
-            streetSearch.style.display = "none";
-            numberSearch.style.display = "none";
-        })
-        
-        streetButton.addEventListener("click", function(){
-            citySearch.style.display = "none";
-            streetSearch.style.display = "block";
-            numberSearch.style.display = "none";
-        })
-        numberButton.addEventListener("click", function(){
+         let cityButton = document.getElementById("city");
+            let streetButton = document.getElementById("street");
+            let numberButton = document.getElementById("number");
+            let citySearch = document.getElementById("citySearch");
+            let streetSearch = document.getElementById("streetSearch");
+            let numberSearch = document.getElementById("numberSearch");
+            let kindButton = document.getElementById("kind");
+            let kindSearch = document.getElementById("kindSearch");
+    
             citySearch.style.display = "none";
             streetSearch.style.display = "none";
-            numberSearch.style.display = "block";
-        })
+            numberSearch.style.display = "none";
+            kindSearch.style.display = "none";
+            
+    
+            cityButton.addEventListener("click", function(){
+                citySearch.style.display = "block";
+                streetSearch.style.display = "none";
+                numberSearch.style.display = "none";
+                kindSearch.style.display = "none";
+            })
+        
+            streetButton.addEventListener("click", function(){
+                citySearch.style.display = "none";
+                streetSearch.style.display = "block";
+                numberSearch.style.display = "none";
+                kindSearch.style.display = "none";
+            })
+            numberButton.addEventListener("click", function(){
+                citySearch.style.display = "none";
+                streetSearch.style.display = "none";
+                numberSearch.style.display = "block";
+                kindSearch.style.display = "none";
+            })
+            kindButton.addEventListener("click", function(){
+                citySearch.style.display = "none";
+                streetSearch.style.display = "none";
+                numberSearch.style.display = "none";
+                kindSearch.style.display = "block";
+            })
     </script>
 
 <%- include("../partials/footer") %>

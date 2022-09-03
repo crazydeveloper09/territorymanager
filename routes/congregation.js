@@ -11,10 +11,10 @@ app.use(methodOverride("_method"));
 
 async function sendVerificationEmail(subject, to, text) {
     const mailgun = require("mailgun-js");
-    const DOMAIN = '5zeta.pl';
+    const DOMAIN = 'websiteswithpassion.pl';
     const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: DOMAIN, host: "api.eu.mailgun.net" });
     const data = {
-        from: `Weryfikacja konta Territory Manager <verification@5zeta.pl>`,
+        from: `Weryfikacja konta Territory Manager <admin@websiteswithpassion.pl>`,
         to: to,
         subject: subject,
         html: `<html>

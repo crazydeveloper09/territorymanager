@@ -9,8 +9,22 @@ body {
     text-transform: uppercase;
     font-weight: 400;
 }
-.card {
+.card.city {
     background: #fad6a5;
+}
+
+.card.village {
+    background: lightblue;
+}
+
+.card.market {
+    background: white;
+}
+
+.territory-section {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 15px 0;
 }
 h1 {
     color: #28a745;
@@ -24,6 +38,11 @@ h4 {
     font-size: 22px;
     font-weight: 400;
 }
+
+.btn-golden {
+    background: #f6b26b;
+    border-color: #f6b26b;
+  }
 
 #name {
     color: black;
