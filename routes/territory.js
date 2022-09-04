@@ -13,11 +13,11 @@ app.use(methodOverride("_method"))
 
 
 router.get("/", isLoggedIn, function(req, res){
-    Territory.find({congregation: req.user._id}).populate("preacher").exec(function(err, territories){
+    Territory.find({congregation: req.user._id}).sort({number: 1}).populate("preacher").exec(function(err, territories){
         if(err){
             console.log(err);
         } else {
-            Preacher.find({congregation: req.user._id}, function(err, preachers){
+            Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                 if(err){
                     console.log(err);
                 } else {
@@ -53,7 +53,7 @@ router.get("/available", isLoggedIn, function(req, res){
 });
 
 router.get("/new", isLoggedIn, function(req, res){
-    Preacher.find({congregation: req.user._id}, function(err, preachers){
+    Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
         if(err){
             console.log(err);
         } else {
@@ -71,11 +71,11 @@ router.get("/new", isLoggedIn, function(req, res){
 router.get("/search", isLoggedIn, function(req, res){
     if(typeof req.query.city !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.city), 'gi');
-        Territory.find({$and: [{city: regex}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{city: regex}, {congregation: req.user._id}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
-                Preacher.find({congregation: req.user._id}, function(err, preachers){
+                Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                     if(err){
                         console.log(err);
                     } else {
@@ -93,11 +93,11 @@ router.get("/search", isLoggedIn, function(req, res){
         });
     } else if(typeof req.query.street !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.street), 'gi');
-        Territory.find({$and: [{street: regex}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{street: regex}, {congregation: req.user._id}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
-                Preacher.find({congregation: req.user._id}, function(err, preachers){
+                Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                     if(err){
                         console.log(err);
                     } else {
@@ -114,11 +114,11 @@ router.get("/search", isLoggedIn, function(req, res){
         });
     } else if(typeof req.query.number !== 'undefined'){
         
-        Territory.find({$and: [{number: req.query.number}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{number: req.query.number}, {congregation: req.user._id}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
-                Preacher.find({congregation: req.user._id}, function(err, preachers){
+                Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                     if(err){
                         console.log(err);
                     } else {
@@ -139,11 +139,11 @@ router.get("/search", isLoggedIn, function(req, res){
                 console.log(err);
             } else {
                
-                Territory.find({$and: [{preacher: preacher._id}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+                Territory.find({$and: [{preacher: preacher._id}, {congregation: req.user._id}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
                     if(err){
                         console.log(err);
                     } else {
-                        Preacher.find({congregation: req.user._id}, function(err, preachers){
+                        Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                             if(err){
                                 console.log(err);
                             } else {
@@ -164,11 +164,11 @@ router.get("/search", isLoggedIn, function(req, res){
     } else if(req.query.kind !== 'undefined'){
         
                
-                Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}]}).populate("preacher").exec(function(err, territories){
+                Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
                     if(err){
                         console.log(err);
                     } else {
-                        Preacher.find({congregation: req.user._id}, function(err, preachers){
+                        Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
                             if(err){
                                 console.log(err);
                             } else {
@@ -250,7 +250,7 @@ router.post("/", isLoggedIn, function(req, res){
 });
 
 router.get("/:territory_id/edit", isLoggedIn, function(req, res){
-    Territory.findById(req.params.territory_id).populate("preacher").exec(function(err, territory){
+    Territory.findById(req.params.territory_id).sort({number: 1}).populate("preacher").exec(function(err, territory){
         if(err){
             console.log(err);
         } else {
@@ -337,7 +337,7 @@ router.get("/:territory_id/delete", isLoggedIn, function(req, res){
 router.get("/available/search", isLoggedIn, function(req, res){
     if(typeof req.query.city !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.city), 'gi');
-        Territory.find({$and: [{city: regex}, {congregation: req.user._id}, {type: 'free'}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{city: regex}, {congregation: req.user._id}, {type: 'free'}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
@@ -352,7 +352,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
         });
     } else if(typeof req.query.street !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.street), 'gi');
-        Territory.find({$and: [{street: regex}, {congregation: req.user._id}, {type: 'free'}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{street: regex}, {congregation: req.user._id}, {type: 'free'}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
@@ -368,7 +368,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
         });
     } else if(typeof req.query.number !== 'undefined'){
         
-        Territory.find({$and: [{number: req.query.number}, {congregation: req.user._id}, {type: 'free'}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{number: req.query.number}, {congregation: req.user._id}, {type: 'free'}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {
@@ -382,7 +382,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
             }
         });
     } else if(req.query.kind !== 'undefined'){
-        Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}, {type: 'free'}]}).populate("preacher").exec(function(err, territories){
+        Territory.find({$and: [{kind: req.query.kind}, {congregation: req.user._id}, {type: 'free'}]}).sort({number: 1}).populate("preacher").exec(function(err, territories){
             if(err){
                 console.log(err);
             } else {

@@ -32,17 +32,17 @@
                 </div>
         <% } else { %>
             <div class="row">
-                <% for(let i=preachers.length-1; i>=0;i--){ %>
+                <% preachers.forEach((preacher) => { %>
                     <div class="col-lg-12">
-                                <span class="info float-start"><%= preachers[i].name %></span>
+                                <span class="info float-start"><%= preacher.name %></span>
                                 <div class="d-inline float-end">
-                                    <a href="/preachers/<%= preachers[i]._id %>/edit" class="btn btn-primary">Edytuj</a>
-                                    <a href="/preachers/<%= preachers[i]._id %>/delete" class="btn btn-danger">Usuń</a>
+                                    <a href="/preachers/<%= preacher._id %>/edit" class="btn btn-primary">Edytuj</a>
+                                    <a href="/preachers/<%= preacher._id %>/delete" class="btn btn-danger">Usuń</a>
                                 </div>
                                 
                                 <hr style="clear: both;">
                             </div>
-                <% } %>
+                <% }) %>
                
             </div>
         <% } %>

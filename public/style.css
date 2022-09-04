@@ -10,11 +10,11 @@ body {
     font-weight: 400;
 }
 .card.city {
-    background: #fad6a5;
+    background: #f6edd9;
 }
 
 .card.village {
-    background: lightblue;
+    background: #e1f1ff;
 }
 
 .card.market {

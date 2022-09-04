@@ -9,7 +9,7 @@ app.use(flash());
 app.use(methodOverride("_method"))
 
 router.get("/", isLoggedIn, function(req, res){
-    Preacher.find({congregation: req.user._id}, function(err, preachers){
+    Preacher.find({congregation: req.user._id}).sort({name: 1}).exec(function(err, preachers){
         if(err){
             console.log(err);
         } else {
@@ -84,7 +84,7 @@ router.get("/:preacher_id/delete", isLoggedIn, function(req, res){
 
 router.get("/search", isLoggedIn, function(req, res){
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    Preacher.find({$and: [{name: regex}, {congregation: req.user._id}]}, function(err, preachers){
+    Preacher.find({$and: [{name: regex}, {congregation: req.user._id}]}).sort({name: 1}).exec(function(err, preachers){
         if(err){
             console.log(err);
         } else {
