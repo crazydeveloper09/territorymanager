@@ -203,7 +203,7 @@ router.post("/", isLoggedIn, function(req, res){
             description: req.body.description,
             forbidden: req.body.forbidden,
             number: req.body.number,
-            kid: req.body.kind,
+            kind: req.body.kind,
             congregation: req.user._id
         });
         console.log(newTerritory);
