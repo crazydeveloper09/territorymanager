@@ -130,6 +130,7 @@
                                     <div class="card-body">
                                        
                                         <p class="info">Miejscowość: <strong><%= territory.city %></strong></p>
+                                        <p class="info">Rodzaj: <strong><%= territory.kind %></strong></p>
                                         <p class="info">Ulica: 
                                             <strong><%= territory.street %> 
                                                 <% if(typeof territory.beginNumber !== 'undefined'){ %>
@@ -144,9 +145,7 @@
                                             <p class="info">Opis: <strong><%= territory.description %></strong></p>
                                         <% } %>
                                         
-                                        <% if(typeof territory.forbidden !== 'undefined' && territory.forbidden !== ''){ %>
-                                            <p class="info">Nie zachodzić: <strong><%= territory.forbidden %></strong></p>
-                                        <% } %>
+                                    
                                         <p class="info">Ostatnio opracowane: <strong><%= territory.lastWorked %></strong></p>
                                         <% if(typeof territory.preacher !== 'undefined'){ %>
                                             <p class="info">Głosiciel: <strong><%= territory.preacher.name %></strong></p>

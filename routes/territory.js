@@ -11,6 +11,10 @@ const express = require("express"),
 app.use(flash());
 app.use(methodOverride("_method"))
 
+function countDaysFromNow(date) {
+    return Math.round(Math.abs(new Date() - new Date(date)) / 86400000);
+}
+
 
 router.get("/", isLoggedIn, function(req, res){
     Territory.find({congregation: req.user._id}).sort({number: 1}).populate("preacher").exec(function(err, territories){
@@ -24,7 +28,8 @@ router.get("/", isLoggedIn, function(req, res){
                     res.render("./territories/index", {
                         currentUser: req.user, 
                         territories: territories, 
-                        preachers: preachers, 
+                        preachers: preachers,
+                        countDaysFromNow: countDaysFromNow, 
                         header: "Wszystkie tereny | Territory Manager", 
                         all: "" 
                     });
@@ -44,7 +49,8 @@ router.get("/available", isLoggedIn, function(req, res){
            
             res.render("index", {
                 currentUser: req.user, 
-                territories: territories, 
+                territories: territories,
+                countDaysFromNow: countDaysFromNow, 
                 header: "Home | Territory Manager", 
                 home: ""
             });
@@ -84,6 +90,7 @@ router.get("/search", isLoggedIn, function(req, res){
                             territories: territories, 
                             currentUser: req.user, 
                             preachers: preachers,
+                            countDaysFromNow: countDaysFromNow,
                             header: "Wyszukiwanie terenów po miejscowości | Territory Manager"
                         });
                     }
@@ -106,6 +113,7 @@ router.get("/search", isLoggedIn, function(req, res){
                             territories: territories, 
                             currentUser: req.user, 
                             preachers: preachers,
+                            countDaysFromNow: countDaysFromNow,
                             header: "Wyszukiwanie terenów po ulicy | Territory Manager"
                         });
                     }
@@ -127,6 +135,7 @@ router.get("/search", isLoggedIn, function(req, res){
                             territories: territories, 
                             currentUser: req.user, 
                             preachers: preachers,
+                            countDaysFromNow: countDaysFromNow,
                             header: "Wyszukiwanie terenów po nr terenu | Territory Manager"
                         });
                     }
@@ -153,6 +162,7 @@ router.get("/search", isLoggedIn, function(req, res){
                                     territories: territories,
                                     currentUser: req.user, 
                                     preachers: preachers,
+                                    countDaysFromNow: countDaysFromNow,
                                     header: "Wyszukiwanie terenów po głosicielu | Territory Manager"
                                 });
                             }
@@ -178,6 +188,7 @@ router.get("/search", isLoggedIn, function(req, res){
                                     territories: territories,
                                     currentUser: req.user, 
                                     preachers: preachers,
+                                    countDaysFromNow: countDaysFromNow,
                                     header: "Wyszukiwanie terenów po rodzaju terenu | Territory Manager"
                                 });
                             }
@@ -201,7 +212,6 @@ router.post("/", isLoggedIn, function(req, res){
             endNumber: req.body.endNumber,
             taken: req.body.taken,
             description: req.body.description,
-            forbidden: req.body.forbidden,
             number: req.body.number,
             kind: req.body.kind,
             congregation: req.user._id
@@ -226,7 +236,6 @@ router.post("/", isLoggedIn, function(req, res){
             endNumber: req.body.endNumber,
             taken: req.body.taken,
             description: req.body.description,
-            forbidden: req.body.forbidden,
             number: req.body.number,
             kind: req.body.kind,
             congregation: req.user._id
@@ -280,7 +289,8 @@ router.get("/:territory_id", isLoggedIn, function(req, res){
         } else {
             res.render("./territories/show", {
                 header: `Teren nr ${territory.number} | Territory Manager`,
-                territory: territory
+                territory: territory,
+                countDaysFromNow: countDaysFromNow,
             })
         }
     });
@@ -303,7 +313,6 @@ router.put("/:territory_id", isLoggedIn, function(req, res){
                 territory.beginNumber = req.body.territory.beginNumber;
                 territory.endNumber = req.body.territory.endNumber;
                 territory.lastWorked = req.body.territory.lastWorked;
-                territory.forbidden = req.body.territory.forbidden;
                 territory.kind = req.body.territory.kind;
                 
                 if(req.body.territory.preacher === ""){
@@ -345,7 +354,8 @@ router.get("/available/search", isLoggedIn, function(req, res){
                 res.render("./territories/availableSearch", {
                     param: req.query.city, 
                     territories: territories, 
-                    currentUser: req.user, 
+                    currentUser: req.user,
+                    countDaysFromNow: countDaysFromNow, 
                     header: "Wyszukiwanie wolnych terenów po miejscowości | Territory Manager"
                 });
             }
@@ -361,6 +371,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
                     param: req.query.street, 
                     territories: territories, 
                     currentUser: req.user, 
+                    countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po ulicy | Territory Manager"
                 });
         
@@ -376,6 +387,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
                     param: req.query.number, 
                     territories: territories, 
                     currentUser: req.user, 
+                    countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"
                 });
             
@@ -390,6 +402,7 @@ router.get("/available/search", isLoggedIn, function(req, res){
                     param: req.query.kind, 
                     territories: territories, 
                     currentUser: req.user, 
+                    countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"
                 });
             

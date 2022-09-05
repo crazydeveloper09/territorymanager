@@ -12,6 +12,7 @@
                 </div>
                 <div class="card-body">
                     <p class="info">Miejscowość: <strong><%= territory.city %></strong></p>
+                    <p class="info">Rodzaj: <strong><%= territory.kind %></strong></p>
                         <p class="info">Ulica: 
                             <strong><%= territory.street %> 
                                 <% if(typeof territory.beginNumber !== 'undefined'){ %>
@@ -26,21 +27,19 @@
                                             <p class="info">Opis: <strong><%= territory.description %></strong></p>
                                         <% } %>
                                         
-                                        <% if(typeof territory.forbidden !== 'undefined' && territory.forbidden !== ''){ %>
-                                            <p class="info">Nie zachodzić: <strong><%= territory.forbidden %></strong></p>
-                                        <% } %>
+                                     
                                         <p class="info">Ostatnio opracowane: <strong><%= territory.lastWorked %></strong></p>
                                         
                                         <% if(typeof territory.preacher !== 'undefined'){ %>
                                             <p class="info">Głosiciel: <strong><%= territory.preacher.name %></strong></p>
                                             <p class="info">Pobrany: <strong><%= territory.taken %></strong></p>
                                             <p class="info"><strong><%= territory.preacher.name %> ma ten teren
-                                                <% if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) < 90){ %>
-                                                    <%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %> dni
-                                                <% } else if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) < 120){ %>
-                                                    <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %></span> dni
-                                                <% } else if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) >= 120){ %>
-                                                    <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %></span> dni
+                                                <% if(countDaysFromNow(territory.taken) < 90){ %>
+                                                    <%= countDaysFromNow(territory.taken) %> dni
+                                                <% } else if(countDaysFromNow(territory.taken) < 120){ %>
+                                                    <span class="text-primary"><%= countDaysFromNow(territory.taken) %></span> dni
+                                                <% } else if(countDaysFromNow(territory.taken) >= 120){ %>
+                                                    <span class="text-danger"><%= countDaysFromNow(territory.taken) %></span> dni
                                                     <br>
                                                     <br>
                                                     <span class="text-danger"><strong>Przypomnij <%= territory.preacher.name %> o oddaniu terenu</strong> </span>
@@ -49,14 +48,14 @@
                                         <% } else { %>
                                             <p class="info"><strong>Teren oznaczony jako <span class="text-success">wolny</span></strong> </p>
                                             <p class="info"><strong>Teren nie był opracowywany od 
-                                                    <% if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 31){ %>
-                                                        <%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 62){ %>
-                                                        <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 93){ %>
-                                                        <span class="text-orange" style="color: #fd7e14;"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) >= 124){ %>
-                                                        <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
+                                                    <% if(countDaysFromNow(territory.lastWorked) < 31){ %>
+                                                        <%= countDaysFromNow(territory.lastWorked) %> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) < 62){ %>
+                                                        <span class="text-primary"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) < 93){ %>
+                                                        <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) >= 124){ %>
+                                                        <span class="text-danger"><%= countDaysFromNow(territory.lastWorked) %></span> dni
                                                     <% } %>
                                             </strong></p>
                                         <% } %>
@@ -73,6 +72,7 @@
                             <div class="col-lg-12">
                                 <h3 id="name"><%= checkout.date.toLocaleDateString() %></h3>
                                 <p class="info">Miejscowość: <strong><%= checkout.record.city %></strong></p>
+                                <p class="info">Rodzaj: <strong><%= checkout.record.kind %></strong></p>
                                 <p class="info">Ulica: 
                                     <strong><%= checkout.record.street %> 
                                         <% if(typeof checkout.record.beginNumber !== 'undefined'){ %>
@@ -87,21 +87,19 @@
                                                     <p class="info">Opis: <strong><%= checkout.record.description %></strong></p>
                                                 <% } %>
                                                 
-                                                <% if(typeof checkout.record.forbidden !== 'undefined' && checkout.record.forbidden !== ''){ %>
-                                                    <p class="info">Nie zachodzić: <strong><%= checkout.record.forbidden %></strong></p>
-                                                <% } %>
+                                                
                                                 <p class="info">Ostatnio opracowane: <strong><%= checkout.record.lastWorked %></strong></p>
                                                 
                                                 <% if(typeof checkout.record.preacher !== 'undefined'){ %>
                                                     <p class="info">Głosiciel: <strong><%= checkout.record.preacher.name %></strong></p>
                                                     <p class="info">Pobrany: <strong><%= checkout.record.taken %></strong></p>
                                                     <p class="info"><strong><%= checkout.record.preacher.name %> ma ten teren
-                                                        <% if(Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) < 90){ %>
-                                                            <%= Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) %> dni
-                                                        <% } else if(Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) < 120){ %>
-                                                            <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) %></span> dni
-                                                        <% } else if(Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) >= 120){ %>
-                                                            <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(checkout.record.taken)) / 86400000) %></span> dni
+                                                        <% if(countDaysFromNow(checkout.record.taken) < 90){ %>
+                                                            <%= countDaysFromNow(checkout.record.taken) %> dni
+                                                        <% } else if(countDaysFromNow(checkout.record.taken) < 120){ %>
+                                                            <span class="text-primary"><%= countDaysFromNow(checkout.record.taken) %></span> dni
+                                                        <% } else if(countDaysFromNow(checkout.record.taken) >= 120){ %>
+                                                            <span class="text-danger"><%= countDaysFromNow(checkout.record.taken) %></span> dni
                                                             <br>
                                                             <br>
                                                             <span class="text-danger"><strong>Przypomnij <%= checkout.record.preacher.name %> o oddaniu terenu</strong> </span>
@@ -110,14 +108,14 @@
                                                 <% } else { %>
                                                     <p class="info"><strong>Teren oznaczony jako <span class="text-success">wolny</span></strong> </p>
                                                     <p class="info"><strong>Teren nie był opracowywany od 
-                                                            <% if(Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) < 31){ %>
-                                                                <%= Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) %> dni
-                                                            <% } else if(Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) < 62){ %>
-                                                                <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) %></span> dni
-                                                            <% } else if(Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) < 93){ %>
-                                                                <span class="text-orange" style="color: #fd7e14;"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
-                                                            <% } else if(Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) >= 124){ %>
-                                                                <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(checkout.record.lastWorked)) / 86400000) %></span> dni
+                                                            <% if(countDaysFromNow(checkout.record.lastWorked) < 31){ %>
+                                                                <%= countDaysFromNow(checkout.record.lastWorked) %> dni
+                                                            <% } else if(countDaysFromNow(checkout.record.lastWorked) < 62){ %>
+                                                                <span class="text-primary"><%= countDaysFromNow(checkout.record.lastWorked) %></span> dni
+                                                            <% } else if(countDaysFromNow(checkout.record.lastWorked) < 93){ %>
+                                                                <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(checkout.record.lastWorked) %></span> dni
+                                                            <% } else if(countDaysFromNow(checkout.record.lastWorked) >= 124){ %>
+                                                                <span class="text-danger"><%= countDaysFromNow(checkout.record.lastWorked) %></span> dni
                                                             <% } %>
                                                     </strong></p>
                                                 <% } %>

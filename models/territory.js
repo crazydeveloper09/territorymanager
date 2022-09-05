@@ -22,8 +22,7 @@ const territorySchema = new mongoose.Schema({
     }],
     type: String,
     taken: String,
-    description: String,
-    forbidden: String
+    description: String
 });
 
 module.exports = mongoose.model("Territory", territorySchema);
