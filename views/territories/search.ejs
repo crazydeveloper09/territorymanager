@@ -121,7 +121,7 @@
             <div class="row">
                 <% territories.forEach((territory) => { %>
                     
-                    <div class="col-lg-6 col-md-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="card <%= territory.kind %>">
                                 <div class="card-title text-center" id="name">
                                     <br>
@@ -151,12 +151,12 @@
                                             <p class="info">Głosiciel: <strong><%= territory.preacher.name %></strong></p>
                                             <p class="info">Pobrany: <strong><%= territory.taken %></strong></p>
                                             <p class="info"><strong><%= territory.preacher.name %> ma ten teren
-                                                <% if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) < 90){ %>
-                                                    <%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %> dni
-                                                <% } else if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) < 120){ %>
-                                                    <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %></span> dni
-                                                <% } else if(Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) >= 120){ %>
-                                                    <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(territory.taken)) / 86400000) %></span> dni
+                                                <% if(countDaysFromNow(territory.taken) < 90){ %>
+                                                    <%= countDaysFromNow(territory.taken) %> dni
+                                                <% } else if(countDaysFromNow(territory.taken) < 120){ %>
+                                                    <span class="text-primary"><%= countDaysFromNow(territory.taken) %></span> dni
+                                                <% } else if(countDaysFromNow(territory.taken) >= 120){ %>
+                                                    <span class="text-danger"><%= countDaysFromNow(territory.taken) %></span> dni
                                                     <br>
                                                     <br>
                                                     <span class="text-danger"><strong>Przypomnij <%= territory.preacher.name %> o oddaniu terenu</strong> </span>
@@ -165,14 +165,14 @@
                                         <% } else { %>
                                             <p class="info"><strong>Teren oznaczony jako <span class="text-success">wolny</span></strong> </p>
                                             <p class="info"><strong>Teren nie był opracowywany od 
-                                                    <% if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 31){ %>
-                                                        <%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 62){ %>
-                                                        <span class="text-primary"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) < 93){ %>
-                                                        <span class="text-orange" style="color: #fd7e14;"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
-                                                    <% } else if(Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) >= 124){ %>
-                                                        <span class="text-danger"><%= Math.round(Math.abs(new Date() - new Date(territory.lastWorked)) / 86400000) %></span> dni
+                                                    <% if(countDaysFromNow(territory.lastWorked) < 31){ %>
+                                                        <%= countDaysFromNow(territory.lastWorked) %> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) < 62){ %>
+                                                        <span class="text-primary"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) < 93){ %>
+                                                        <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                                                    <% } else if(countDaysFromNow(territory.lastWorked) >= 124){ %>
+                                                        <span class="text-danger"><%= countDaysFromNow(territory.lastWorked) %></span> dni
                                                     <% } %>
                                             </strong></p>
                                         <% } %>

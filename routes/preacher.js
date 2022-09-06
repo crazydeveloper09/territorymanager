@@ -88,7 +88,6 @@ router.get("/search", isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         } else {
-            console.log(regex)
             res.render("./preachers/search", {
                 param: req.query.search, 
                 preachers: preachers, 

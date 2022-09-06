@@ -1,3 +1,5 @@
+const congregation = require("../models/congregation");
+
 const express = require("express"),
     router              = express.Router({mergeParams: true}),
     app                 = express(),
@@ -138,6 +140,47 @@ router.post("/", function(req, res){
         });
     }
 });
+
+router.get("/:congregation_id", isLoggedIn, function(req, res){
+    
+    Congregation.findById(req.params.congregation_id).populate(["preacher", "territories"]).exec(function(err, congregation){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("./congregations/show", {
+                header: `Zbór ${congregation.username} | Territory Manager`,
+                congregation: congregation,
+                currentUser: req.user,
+            })
+        }
+    });
+	
+});
+
+router.get("/:congregation_id/edit", isLoggedIn, function(req, res){
+    Congregation.findById(req.params.congregation_id, function(err, congregation){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("./congregations/edit", { 
+                currentUser: req.user, 
+                congregation: congregation, 
+                header: `Edytuj głosiciela w zborze ${req.user.username} | Territory Manager`
+            });
+        }
+    });
+});
+
+router.put("/:congregation_id", isLoggedIn, function(req, res){
+    Congregation.findByIdAndUpdate(req.params.congregation_id, req.body.congregation, function(err, congregation){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect(`/congregations/${req.user._id}`);
+        }
+    });
+});
+
 
 router.get('/:congregation_id/verification', (req, res) => {
     Congregation.findOne({
@@ -292,5 +335,13 @@ router.post("/:congregation_id/resend/two-factor", (req, res) => {
         }
     })
 })
+
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    req.flash("error", "Prosimy zaloguj się najpierw");
+    res.redirect("/login");
+}
 
 module.exports = router;

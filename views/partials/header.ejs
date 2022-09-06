@@ -52,6 +52,16 @@
                     <a class="nav-link" href="/preachers">Głosiciele</a>
                 </li>
             <% } %>
+
+            <% if(typeof congregation !== 'undefined'){ %>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/congregations/<%= currentUser._id %>">Zbór</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/congregations/<%= currentUser._id %>">Zbór</a>
+                </li>
+            <% } %>
     
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Wyloguj</a>

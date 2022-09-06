@@ -291,6 +291,7 @@ router.get("/:territory_id", isLoggedIn, function(req, res){
                 header: `Teren nr ${territory.number} | Territory Manager`,
                 territory: territory,
                 countDaysFromNow: countDaysFromNow,
+                currentUser: req.user,
             })
         }
     });
