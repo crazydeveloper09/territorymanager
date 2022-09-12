@@ -15,12 +15,12 @@
                         <%= success %>
                     </div>
                 <% } %>
-                <% if(typeof user !== 'undefined'){ %>
-                    <form action="/congregations/<%= user._id %>/two-factor" method="post" id="form4">
+                <% if(typeof congregation !== 'undefined'){ %>
+                    <form action="/congregations/<%= congregation._id %>/two-factor" method="post" id="form4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="code" id="code" placeholder="123523" aria-label="Kod weryfikacyjny" aria-describedby="basic-addon1" required>
                             <label for="code" class="username">
-                                Podaj kod weryfikacyjny wysłany na adres email
+                                Kod weryfikacyjny
                                 
                             </label>
                             
@@ -28,11 +28,11 @@
                         <input type="submit" value="Zweryfikuj konto" class="btn button btn-green" id="send">
                        
                     </form>
-                    <form action="/congregations/<%= user._id %>/resend/two-factor" method="post">
+                    <form action="/congregations/<%= congregation._id %>/resend/two-factor" method="post">
                         <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
                     </form>
                 <% } else { %>
-                    <form action="/congregations/<%= user_id %>/resend/two-factor" method="post">
+                    <form action="/congregations/<%= congregation_id %>/resend/two-factor" method="post">
                         <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
                     </form>
                 <% } %>

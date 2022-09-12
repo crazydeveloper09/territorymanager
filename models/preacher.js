@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const preacherSchema = new mongoose.Schema({
     name: String,
@@ -8,4 +8,4 @@ const preacherSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Preacher", preacherSchema);
+export default mongoose.model("Preacher", preacherSchema);

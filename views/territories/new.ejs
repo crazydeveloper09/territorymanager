@@ -145,40 +145,11 @@
             </div>
         </div>
    
-<script src="/script.js"></script>
+<script src="/manageKindOfTerritories.js"></script>
 <script>
-    let streetDiv = document.getElementById("streetDiv");
-    let beginNumberDiv = document.getElementById("beginNumberDiv");
-    let endNumberDiv = document.getElementById("endNumberDiv");
-    let streetLabel = document.getElementById("streetLabel");
-    let cityLabel = document.getElementById("cityLabel");
-
-    streetDiv.style.display = "none";
-    beginNumberDiv.style.display = "none";
-    endNumberDiv.style.display = "none";
-
     document.getElementById("form4").addEventListener("submit", function(){
         document.getElementById("send").setAttribute("disabled", "disabled");
         document.getElementById("send").innerText = `Dodawanie...`;
-    })
-
-    document.getElementById("kind").addEventListener('change', (event) => {
-        if(event.target.value === "city"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "block";
-            endNumberDiv.style.display = "block";
-        } else if(event.target.value === "village") {
-            streetDiv.style.display = "none";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            cityLabel.innerHTML = `Miejscowość (ci po przecinku) <span class="text-danger" style="font-size: 13px;">*wymagane</span>`;
-        } else if(event.target.value === "market"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            streetLabel.innerText = "Ulica (e po przecinku)"
-            cityLabel.innerHTML = `Miejscowość <span class="text-danger" style="font-size: 13px;">*wymagane</span`;
-        }
     })
 </script>    
 </body>

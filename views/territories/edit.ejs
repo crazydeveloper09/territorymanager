@@ -153,58 +153,13 @@
         </div>
 
       
-    <script src="/script.js"></script>
+        <script src="/manageKindOfTerritories.js"></script>
     <script>
-        let streetDiv = document.getElementById("streetDiv");
-    let beginNumberDiv = document.getElementById("beginNumberDiv");
-    let endNumberDiv = document.getElementById("endNumberDiv");
-    let streetLabel = document.getElementById("streetLabel");
-    let cityLabel = document.getElementById("cityLabel");
-    let kindSelect = document.getElementById("kind");
-
-    streetDiv.style.display = "none";
-    beginNumberDiv.style.display = "none";
-    endNumberDiv.style.display = "none";
-
-    if(kindSelect.value === "city"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "block";
-            endNumberDiv.style.display = "block";
-    } else if(kindSelect.value === "village") {
-            streetDiv.style.display = "none";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            cityLabel.innerHTML = `Edytuj miejscowość (ci)`;
-    } else if(kindSelect.value === "market"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            streetLabel.innerText = "Edytuj ulicę (e)"
-            cityLabel.innerHTML = `Edytuj miejscowość`;
-    }
+      
 
     document.getElementById("form4").addEventListener("submit", function(){
         document.getElementById("send").setAttribute("disabled", "disabled");
         document.getElementById("send").innerText = `Edytowanie...`;
-    })
-
-    kindSelect.addEventListener('change', (event) => {
-        if(event.target.value === "city"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "block";
-            endNumberDiv.style.display = "block";
-        } else if(event.target.value === "village") {
-            streetDiv.style.display = "none";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            cityLabel.innerHTML = `Edytuj miejscowość (ci)`;
-        } else if(event.target.value === "market"){
-            streetDiv.style.display = "block";
-            beginNumberDiv.style.display = "none";
-            endNumberDiv.style.display = "none";
-            streetLabel.innerText = "Edytuj ulicę (e)"
-            cityLabel.innerHTML = `Edytuj miejscowość`;
-        }
     })
     </script>    
 </body>

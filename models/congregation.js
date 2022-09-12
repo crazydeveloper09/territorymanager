@@ -1,5 +1,5 @@
-const mongoose = require("mongoose"),
-    passportLocalMongoose = require("passport-local-mongoose");
+import mongoose from"mongoose";
+import passportLocalMongoose from"passport-local-mongoose";
 
 const congregationSchema = new mongoose.Schema({
     username: String,
@@ -26,4 +26,4 @@ const congregationSchema = new mongoose.Schema({
     ]
 })
 congregationSchema.plugin(passportLocalMongoose);
-module.exports = mongoose.model("Congregation", congregationSchema);
+export default mongoose.model("Congregation", congregationSchema);

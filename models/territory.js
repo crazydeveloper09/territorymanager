@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const territorySchema = new mongoose.Schema({
     city: String,
@@ -25,4 +25,4 @@ const territorySchema = new mongoose.Schema({
     description: String
 });
 
-module.exports = mongoose.model("Territory", territorySchema);
+export default mongoose.model("Territory", territorySchema);

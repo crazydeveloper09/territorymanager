@@ -79,3 +79,25 @@ a {
   color: #c9c7c7;
   font-size:18px;
 }
+
+
+.description {
+  color: black;
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+ .title {
+  font-size: 35px;
+  color: #fb8200;
+  font-weight: 700;
+  
+}
+
+.title_r {
+  font-size: 45px;
+  color: #28a745;
+  font-weight: 700;
+  
+}

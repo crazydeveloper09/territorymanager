@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const checkoutSchema = new mongoose.Schema({
     date: {
@@ -8,4 +8,4 @@ const checkoutSchema = new mongoose.Schema({
     record: Object
 })
 
-module.exports = mongoose.model("Checkout", checkoutSchema)
+export default mongoose.model("Checkout", checkoutSchema)
