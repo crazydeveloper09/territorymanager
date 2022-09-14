@@ -114,7 +114,7 @@ export const searchAllTerritories = (req, res, next) => {
             .sort({number: 1})
             .populate("preacher")
             .exec()
-            .then((preachers) => {
+            .then((territories) => {
                 Preacher
                     .find({congregation: req.user._id})
                     .sort({name: 1})

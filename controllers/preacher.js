@@ -3,6 +3,7 @@ import Preacher from "../models/preacher.js";
 import flash from "connect-flash";
 import methodOverride from "method-override";
 import { escapeRegex } from "../helpers.js";
+import Territory from "../models/territory.js";
 
 const app = express();
 
@@ -74,7 +75,19 @@ export const deletePreacher = (req, res, next) => {
     Preacher
         .findByIdAndDelete(req.params.preacher_id)
         .exec()
-        .then((preacher) => res.redirect("/preachers"))
+        .then((preacher) => {
+            Territory
+                .find({ preacher: preacher._id })
+                .exec()
+                .then((territories) => {
+                    territories.forEach((territory) => {
+                        territory.preacher = undefined;
+                        territory.type = 'free';
+                        territory.save()
+                    })
+                    res.redirect("/preachers")
+                })
+        })
         .catch((err) => console.log(err))
 }
 
