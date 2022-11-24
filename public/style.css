@@ -25,7 +25,7 @@ body {
 }
 
 .card {
-    margin-top: 8px;
+    margin: 10px 0;
 }
 .card.city {
     background: #f6edd9;
@@ -37,6 +37,10 @@ body {
 
 .card.market {
     background: white;
+}
+
+.card.noPhysical {
+    border: 3px solid #9999CC;
 }
 
 .territory-section {
@@ -89,6 +93,16 @@ h4 {
     background: #28a745;
     color: white;
     padding: 4px 8px;
+}
+
+.territory-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.territory-navigation a {
+    font-size: 19px;
+    text-decoration: none;
 }
 
 

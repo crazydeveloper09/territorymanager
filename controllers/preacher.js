@@ -91,6 +91,20 @@ export const deletePreacher = (req, res, next) => {
         .catch((err) => console.log(err))
 }
 
+export const confirmDeletingPreacher = (req, res, next) => {
+    Preacher
+        .findById(req.params.preacher_id)
+        .exec()
+        .then((preacher) => {
+            res.render("./preachers/deleteConfirm", {
+                preacher: preacher,
+                currentUser: req.user,
+                header: `Potwierdzenie usunięcia głosiciela | Territory Manager`
+            });
+        })
+        .catch((err) => console.log(err))
+}
+
 export const searchPreachers = (req, res, next) => {
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
     Preacher

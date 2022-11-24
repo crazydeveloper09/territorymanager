@@ -22,7 +22,11 @@ const territorySchema = new mongoose.Schema({
     }],
     type: String,
     taken: String,
-    description: String
+    description: String,
+    isPhysicalCard: {
+        type: Boolean,
+        default: true
+    }
 });
 
 export default mongoose.model("Territory", territorySchema);

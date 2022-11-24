@@ -4,6 +4,7 @@ import Territory from "../models/territory.js";
 import Checkout from "../models/checkout.js";
 import flash from "connect-flash";
 import methodOverride from "method-override";
+import mongoose from "mongoose";
 import { countDaysFromNow, escapeRegex } from "../helpers.js";
 
 const app = express();
@@ -276,7 +277,7 @@ export const createTerritory = (req, res, next) => {
         description: req.body.description,
         number: req.body.number,
         kind: req.body.kind,
-        congregation: req.user._id
+        congregation: req.user._id,
     });
     Territory
         .create(newTerritory)
@@ -286,7 +287,7 @@ export const createTerritory = (req, res, next) => {
             } else {
                 createdTerritory.preacher = req.body.preacher;
             }
-            
+            createdTerritory.isPhysicalCard = req.body.isPhysicalCard === 'true';
             createdTerritory.save();
             res.redirect("/territories/available");
         })
@@ -299,12 +300,21 @@ export const renderTerritoryHistory = (req, res, next) => {
         .populate(["preacher", "history"])
         .exec()
         .then((territory) => {
-            res.render("./territories/show", {
-                header: `Teren nr ${territory.number} | Territory Manager`,
-                territory: territory,
-                countDaysFromNow: countDaysFromNow,
-                currentUser: req.user,
-            })
+            Territory
+                .find({congregation: req.user._id})
+                .exec()
+                .then((territories) => {
+                    const currentIndex = territories.findIndex(t => t._id.toString() === territory._id.toString());
+                    res.render("./territories/show", {
+                        header: `Teren nr ${territory.number} | Territory Manager`,
+                        territory: territory,
+                        countDaysFromNow: countDaysFromNow,
+                        currentUser: req.user,
+                        currentIndex: currentIndex,
+                        territories: territories
+                    })
+                })
+                .catch((err) => console.log(err))
         })
         .catch((err) => console.log(err))
 }
@@ -333,6 +343,7 @@ export const renderTerritoryEditForm = (req, res, next) => {
 }
 
 export const editTerritory = (req, res, next) => {
+  
     Territory
         .findById(req.params.territory_id)
         .populate("preacher")
@@ -352,6 +363,7 @@ export const editTerritory = (req, res, next) => {
                     territory.lastWorked = req.body.territory.lastWorked;
                     territory.kind = req.body.territory.kind;
                     
+                    territory.isPhysicalCard = req.body.territory.isPhysicalCard === 'true';
                     if(req.body.territory.preacher === ""){
                         territory.preacher = undefined;
                         territory.type = "free";
@@ -360,7 +372,7 @@ export const editTerritory = (req, res, next) => {
                         territory.type = undefined;
                     }
                     territory.save();
-                    res.redirect("/territories");
+                    res.redirect(`/territories/${territory._id}`);
                 })
                 .catch((err) => console.log(err))
         })
@@ -372,6 +384,20 @@ export const deleteTerritory = (req, res, next) => {
         .findByIdAndDelete(req.params.territory_id)
         .exec()
         .then((territory) =>  res.redirect("/territories"))
+        .catch((err) => console.log(err))
+}
+
+export const confirmDeletingTerritory = (req, res, next) => {
+    Territory
+        .findById(req.params.territory_id)
+        .exec()
+        .then((territory) =>{
+            res.render("./territories/deleteConfirm", {
+                territory: territory,
+                currentUser: req.user,
+                header: `Potwierdzenie usunięcia terenu | Territory Manager`
+            });
+        })
         .catch((err) => console.log(err))
 }
 
