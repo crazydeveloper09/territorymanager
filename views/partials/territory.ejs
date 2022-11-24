@@ -75,7 +75,10 @@
                 <% } %> 
                 
                 <div class="d-inline">
-                    <a href="/territories/<%= territory._id %>" class="btn btn-success">Zobacz historię</a>
+                    <% if (typeof show === 'undefined') { %>
+                        <a href="/territories/<%= territory._id %>" class="btn btn-success">Zobacz historię</a>
+                    <% } %>
+                    
                         <a href="/territories/<%= territory._id %>/edit" class="btn btn-primary">Edytuj</a>
                         <a href="/territories/<%= territory._id %>/delete" class="btn btn-danger">Usuń</a>
                 </div>
