@@ -10,8 +10,8 @@
         </div>
         <%- include("../partials/territorySearch") %>
         <div class="territory-navigation">
-            <a href="/territories/dateChanges?date=<%= dateToISOString(new Date().getDate() - 1) %>"><i class="fa-solid fa-backward"></i> <%= dateToISOString(new Date().getDate() - 1) %></a>
-            <a href="/territories/dateChanges?date=<%= dateToISOString(new Date().getDate() + 1) %>"></i> <%= dateToISOString(new Date().getDate() + 1) %> <i class="fa-solid fa-forward"></i></a>
+            <a href="/territories/dateChanges?date=<%= dateToISOString(new Date(date).getDate() - 1) %>"><i class="fa-solid fa-backward"></i> <%= dateToISOString(new Date(date).getDate() - 1) %></a>
+            <a href="/territories/dateChanges?date=<%= dateToISOString(new Date(date).getDate() + 1) %>"></i> <%= dateToISOString(new Date(date).getDate() + 1) %> <i class="fa-solid fa-forward"></i></a>
             
         </div>
         <% if(territories.length===0){ %>
