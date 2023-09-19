@@ -31,7 +31,7 @@ app.use(helmet({
 }))
 dotenv.config();
 
-mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true})
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 
 
 app.use(expressSession({
