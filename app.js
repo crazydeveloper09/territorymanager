@@ -6,6 +6,7 @@ import indexRoutes from "./routes/index.js";
 import preachersRoutes from "./routes/preacher.js";
 import territoriesRoutes from "./routes/territory.js";
 import congregationsRoutes from "./routes/congregation.js";
+import ministryGroupsRoutes from "./routes/ministryGroup.js";
 import Congregation from "./models/congregation.js";
 import LocalStrategy from "passport-local";
 import flash from "connect-flash";
@@ -17,7 +18,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
+export const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -54,6 +55,7 @@ passport.deserializeUser(Congregation.deserializeUser());
 app.use("/preachers", preachersRoutes);
 app.use("/territories", territoriesRoutes);
 app.use("/congregations", congregationsRoutes)
+app.use("/congregations/:congregation_id/ministryGroups", ministryGroupsRoutes)
 app.use(indexRoutes);
 
 app.listen(process.env.PORT);
