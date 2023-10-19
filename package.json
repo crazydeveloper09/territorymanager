@@ -25,7 +25,9 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
-    "pdf-puppeteer": "^1.1.11"
+    "pdf-puppeteer": "^1.1.11",
+    "phantom-html-to-pdf": "^0.8.3",
+    "wkhtmltopdf": "^0.4.0"
   },
   "type": "module",
   "devDependencies": {
