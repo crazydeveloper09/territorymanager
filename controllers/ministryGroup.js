@@ -30,13 +30,24 @@ export const generateListOfMinistryGroups = (req, res, next) => {
                 const DOWNLOAD_DIR = path.join(process.env.HOME || process.env.USERPROFILE, 'downloads/')
 
 
-                var options = { format: 'A4', orientation: 'landscape' };
+                var options = { format: 'A4', orientation: 'landscape', timeout: 540000 };
 
                 pdf.create(str, options).toFile(`${DOWNLOAD_DIR}Grupy_sluzby_${title}.pdf`, function(err, data) {
                     if (err) return console.log(err);
+                  
+                    
                 
-                    req.flash("success", "Plik pomyślnie utworzony. Zobacz folder Pobrane")
-                    res.redirect(`/congregations/${req.user._id}`)
+                   res.download(data.filename, `Grupy_sluzby_${title}.pdf`, (err) => {
+                        if (err) {
+                            res.send({
+                                error : err,
+                                msg   : "Problem downloading the file"
+                            })
+                        } else {
+                            req.flash("success", "Plik pomyślnie utworzony. Zobacz folder Pobrane")
+                    
+                        }
+                    })
                 });
             
             });
