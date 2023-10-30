@@ -32,11 +32,11 @@
                 </div>
             </div>
         <% } else { %>
-            <div class="row">
+            <div class="row" style="padding-bottom: 80px;">
                 <% result.docs.forEach((territory) => { %>
                     <%- include("../partials/territory", {territory: territory}) %>
                 <% }) %>
-                <nav style="margin-top: 20px">
+                <nav>
                     <ul class="pagination justify-content-center">
                         <% for( let index = 1; index <= result.totalPages; index++ ) { %>
                             <% if (index === result.page) { %>
