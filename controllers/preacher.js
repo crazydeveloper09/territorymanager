@@ -11,14 +11,17 @@ app.use(flash());
 app.use(methodOverride("_method"))
 
 export const renderListOfPreachers = (req, res, next) => {
+    const paginationOptions = {
+        limit: 10,
+        page: req.query.page,
+        sort: {name: 1}
+    }
     Preacher
-        .find({congregation: req.user._id})
-        .sort({name: 1})
-        .exec()
-        .then((preachers) => {
+        .paginate({congregation: req.user._id}, paginationOptions)
+        .then((result) => {
             res.render("./preachers/index", { 
                 currentUser: req.user, 
-                preachers: preachers, 
+                result, 
                 header: `Głosiciele zboru ${req.user.username} | Territory Manager`, 
                 pre: ""  
             });

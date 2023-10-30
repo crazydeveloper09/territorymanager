@@ -32,12 +32,15 @@ app.use(flash());
 app.use(methodOverride("_method"));
 
 export const renderListOfAllTerritories = (req, res, next) => {
+    const paginationOptions = {
+        limit: 15,
+        page: req.query.page,
+        populate: 'preacher',
+        sort: {number: 1}
+    }
     Territory
-        .find({congregation: req.user._id})
-        .sort({number: 1})
-        .populate("preacher")
-        .exec()
-        .then((territories) => {
+        .paginate({congregation: req.user._id}, paginationOptions)
+        .then((result) => {
             Preacher
                 .find({congregation: req.user._id})
                 .sort({name: 1})
@@ -45,7 +48,7 @@ export const renderListOfAllTerritories = (req, res, next) => {
                 .then((preachers) => {
                     res.render("./territories/index", {
                         currentUser: req.user, 
-                        territories: territories, 
+                        result, 
                         preachers: preachers,
                         countDaysFromNow: countDaysFromNow,
                         dateToISOString: dateToISOString, 
