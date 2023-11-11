@@ -7,6 +7,26 @@
             </div>
         </div>
         <%- include("../partials/territorySearch") %>
+        <div class="row">
+            <div class="col-lg-12 limitChoose">
+                <h5 style="color: black;">Liczba terenów na stronę: </h5>
+                <span>
+                    <a href="/territories?limit=20">20</a>
+                </span>
+                <span>
+                    <a href="/territories?limit=40">40</a>
+                </span>
+                <span>
+                    <a href="/territories?limit=60">60</a>
+                </span>
+                <span>
+                    <a href="/territories?limit=80">80</a>
+                </span>
+                <span>
+                    <a href="/territories?limit=100">100</a>
+                </span>
+            </div>
+        </div>
         <% if (currentUser.mainCity) { %>
             <div class="d-none" id="mainCityLatitude"><%= currentUser.mainCityLatitude %></div>
             <div class="d-none" id="mainCityLongitude"><%= currentUser.mainCityLongitude %></div>
@@ -41,12 +61,12 @@
                         <% for( let index = 1; index <= result.totalPages; index++ ) { %>
                             <% if (index === result.page) { %>
                                 <li class="page-item active">
-                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/territories?page=<%= index %>&limit=<%= result.limit ? result.limit : '20' %>" class="page-link"><%= index %></a>
                                 </li>
                                 
                             <% } else { %>
                                 <li class="page-item">
-                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/territories?page=<%= index %>&limit=<%= result.limit ? result.limit : '20' %>" class="page-link"><%= index %></a>
                                 </li>
                                
                             <% } %>

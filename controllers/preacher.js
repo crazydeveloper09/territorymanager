@@ -12,8 +12,8 @@ app.use(methodOverride("_method"))
 
 export const renderListOfPreachers = (req, res, next) => {
     const paginationOptions = {
-        limit: 10,
-        page: req.query.page,
+        limit: req.query.limit || 10,
+        page: req.query.page || 1,
         sort: {name: 1}
     }
     Preacher

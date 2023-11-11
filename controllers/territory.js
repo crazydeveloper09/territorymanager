@@ -33,8 +33,8 @@ app.use(methodOverride("_method"));
 
 export const renderListOfAllTerritories = (req, res, next) => {
     const paginationOptions = {
-        limit: 15,
-        page: req.query.page,
+        limit: req.query.limit || 20,
+        page: req.query.page || 1,
         populate: 'preacher',
         sort: {number: 1}
     }
@@ -62,19 +62,29 @@ export const renderListOfAllTerritories = (req, res, next) => {
 }
 
 export const renderListOfAvailableTerritories = (req, res, next) => {
+    const paginationOptions = {
+        limit: req.query.limit || 15,
+        page: req.query.page || 1,
+        populate: 'preacher',
+        sort: {lastWorked: 1}
+    }
     Territory
         .find({ $and: [{congregation: req.user._id}, {type: 'free'}]})
-        .populate("preacher")
-        .sort({lastWorked: 1})
         .exec()
         .then((territories) => {
-            res.render("index", {
-                currentUser: req.user, 
-                territories: territories,
-                countDaysFromNow: countDaysFromNow, 
-                header: "Home | Territory Manager", 
-                home: ""
-            });
+            Territory
+                .paginate({ $and: [{congregation: req.user._id}, {type: 'free'}]}, paginationOptions)
+                .then((result) => {
+                    res.render("index", {
+                        currentUser: req.user, 
+                        territories: territories,
+                        result,
+                        countDaysFromNow: countDaysFromNow, 
+                        header: "Home | Territory Manager", 
+                        home: ""
+                    });
+                })
+                .catch((err) => console.log(err))
         })
         .catch((err) => console.log(err))
 }
@@ -96,19 +106,22 @@ export const renderNewTerritoryForm = (req, res, next) => {
 }
 
 export const searchAllTerritories = (req, res, next) => {
+    const paginationOptions = {
+        limit: req.query.limit || 20,
+        page: req.query.page || 1,
+        populate: 'preacher',
+        sort: {number: 1}
+    }
     if(typeof req.query.city !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.city), 'gi');
         Territory
-            .find({
+            .paginate({
                 $and: [
                     {city: regex}, 
                     {congregation: req.user._id}
                 ]
-            })
-            .sort({number: 1})
-            .populate("preacher")
-            .exec()
-            .then((territories) => {
+            }, paginationOptions)
+            .then((result) => {
                 Preacher
                     .find({congregation: req.user._id})
                     .sort({name: 1})
@@ -116,7 +129,8 @@ export const searchAllTerritories = (req, res, next) => {
                     .then((preachers) => {
                         res.render("./territories/search", {
                             param: req.query.city, 
-                            territories: territories, 
+                            paramName: 'city', 
+                            result, 
                             currentUser: req.user, 
                             preachers: preachers,
                             countDaysFromNow: countDaysFromNow,
@@ -130,16 +144,13 @@ export const searchAllTerritories = (req, res, next) => {
     } else if(typeof req.query.street !== 'undefined'){
         const regex = new RegExp(escapeRegex(req.query.street), 'gi');
         Territory
-            .find({
+            .paginate({
                 $and: [
                     {street: regex}, 
                     {congregation: req.user._id}
                 ]
-            })
-            .sort({number: 1})
-            .populate("preacher")
-            .exec()
-            .then((territories) => {
+            }, paginationOptions)
+            .then((result) => {
                 Preacher
                     .find({congregation: req.user._id})
                     .sort({name: 1})
@@ -147,7 +158,8 @@ export const searchAllTerritories = (req, res, next) => {
                     .then((preachers) => {
                         res.render("./territories/search", {
                             param: req.query.street, 
-                            territories: territories, 
+                            paramName: 'street', 
+                            result,  
                             currentUser: req.user, 
                             preachers: preachers,
                             countDaysFromNow: countDaysFromNow,
@@ -162,24 +174,22 @@ export const searchAllTerritories = (req, res, next) => {
     } else if(typeof req.query.number !== 'undefined'){
         
         Territory
-            .find({
+            .paginate({
                 $and: [
                     {number: req.query.number}, 
                     {congregation: req.user._id}
                 ]
-            })
-            .sort({number: 1})
-            .populate("preacher")
-            .exec()
-            .then((territories) => {
+            }, paginationOptions)
+            .then((result) => {
                 Preacher
                     .find({congregation: req.user._id})
                     .sort({name: 1})
                     .exec()
                     .then((preachers) => {
                         res.render("./territories/search", {
-                            param: req.query.number, 
-                            territories: territories, 
+                            param: req.query.number,
+                            paramName: 'number',  
+                            result,  
                             currentUser: req.user, 
                             preachers: preachers,
                             countDaysFromNow: countDaysFromNow,
@@ -201,16 +211,13 @@ export const searchAllTerritories = (req, res, next) => {
             .exec()
             .then((preacher) => {
                 Territory
-                    .find({
+                    .paginate({
                         $and: [
                             {preacher: preacher._id}, 
                             {congregation: req.user._id}
                         ]
                     })
-                    .sort({number: 1})
-                    .populate("preacher")
-                    .exec()
-                    .then((territories) => {
+                    .then((result) => {
                         Preacher
                             .find({congregation: req.user._id})
                             .sort({name: 1})
@@ -218,7 +225,9 @@ export const searchAllTerritories = (req, res, next) => {
                             .then((preachers) => {
                                 res.render("./territories/search", {
                                     param: preacher.name, 
-                                    territories: territories,
+                                    paramName: 'preacher', 
+                                    result,
+     
                                     currentUser: req.user, 
                                     preachers: preachers,
                                     countDaysFromNow: countDaysFromNow,
@@ -234,24 +243,22 @@ export const searchAllTerritories = (req, res, next) => {
     } else if(typeof req.query.kind !== 'undefined'){
         
         Territory
-            .find({
+            .paginate({
                 $and: [
                     {kind: req.query.kind}, 
                     {congregation: req.user._id}
                 ]
             })
-            .sort({number: 1})
-            .populate("preacher")
-            .exec()
-            .then((territories) => {
+            .then((result) => {
                 Preacher
                     .find({congregation: req.user._id})
                     .sort({name: 1})
                     .exec()
                     .then((preachers) => {
                         res.render("./territories/search", {
-                            param: req.query.kind, 
-                            territories: territories,
+                            param: req.query.kind,
+                            paramName: 'kind',  
+                            result, 
                             currentUser: req.user, 
                             preachers: preachers,
                             countDaysFromNow: countDaysFromNow,
@@ -262,26 +269,24 @@ export const searchAllTerritories = (req, res, next) => {
                     .catch((err) => console.log(err))
             })
             .catch((err) => console.log(err))
-    } else {
+    } else if(typeof req.query.taken !== 'undefined') {
         Territory
-        .find({
+        .paginate({
             $and: [
                 {type: { $not: /free/ }}, 
                 {congregation: req.user._id}
             ]
-        })
-        .sort({number: 1})
-        .populate("preacher")
-        .exec()
-        .then((territories) => {
+        }, paginationOptions)
+        .then((result) => {
             Preacher
                 .find({congregation: req.user._id})
                 .sort({name: 1})
                 .exec()
                 .then((preachers) => {
                     res.render("./territories/search", {
-                        param: 'Zajęte tereny', 
-                        territories: territories, 
+                        param: req.query.taken,
+                        paramName: 'taken', 
+                        result, 
                         currentUser: req.user, 
                         preachers: preachers,
                         countDaysFromNow: countDaysFromNow,

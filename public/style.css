@@ -47,6 +47,10 @@ body {
     margin-bottom: 10px;
 }
 
+.limitChoose span a {
+    text-decoration: none;
+}
+
 .page-link {
     color: #28a745;
 }

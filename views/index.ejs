@@ -35,10 +35,28 @@
                 </div>
             </div>
         <% } else { %>
-            <div class="row">
-                <% territories.forEach((territory) => { %>
+            <div class="row" style="padding-bottom: 80px;">
+                <% result.docs.forEach((territory) => { %>
                     <%- include("partials/territory", {territory: territory, type: 'available'}) %>
                 <% }) %>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <% for( let index = 1; index <= result.totalPages; index++ ) { %>
+                            <% if (index === result.page) { %>
+                                <li class="page-item active">
+                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                </li>
+                                
+                            <% } else { %>
+                                <li class="page-item">
+                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                </li>
+                               
+                            <% } %>
+                        <% } %>
+                    
+                    </ul>
+                </nav>
             </div>
         <% } %>
         <div class="d-none" id="territories">

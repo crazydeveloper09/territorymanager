@@ -22,6 +22,26 @@
             </div>
         </div>
         <br>
+        <div class="row">
+            <div class="col-lg-12 limitChoose">
+                <h5 style="color: black;">Liczba głosicieli na stronę: </h5>
+                <span>
+                    <a href="/preachers?limit=10">10</a>
+                </span>
+                <span>
+                    <a href="/preachers?limit=30">30</a>
+                </span>
+                <span>
+                    <a href="/preachers?limit=50">50</a>
+                </span>
+                <span>
+                    <a href="/preachers?limit=70">70</a>
+                </span>
+                <span>
+                    <a href="/preachers?limit=100">100</a>
+                </span>
+            </div>
+        </div>
         <% if(result.docs.length === 0){ %>
             <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-12">
@@ -37,7 +57,7 @@
                         <div class="preacher__info">
                             <div class="info">
                                 <p><%= preacher.name %></p>
-                                <a href="/territories/search?preacher=<%= preacher._id %>" class="preacher__link">Zobacz tereny głosiciela</a>
+                                <a href="/preachers/search?preacher=<%= preacher._id %>" class="preacher__link">Zobacz tereny głosiciela</a>
                             </div>
                             <div class="preachers-buttons">
                                 <a href="/preachers/<%= preacher._id %>/edit" class="btn btn-primary">Edytuj</a>
@@ -51,12 +71,12 @@
                         <% for( let index = 1; index <= result.totalPages; index++ ) { %>
                             <% if (index === result.page) { %>
                                 <li class="page-item active">
-                                    <a href="/preachers?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/preachers?page=<%= index %>&limit=<%= result.limit ? result.limit : '10' %>" class="page-link"><%= index %></a>
                                 </li>
                                 
                             <% } else { %>
                                 <li class="page-item">
-                                    <a href="/preachers?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/preachers?page=<%= index %>&limit=<%= result.limit ? result.limit : '10' %>" class="page-link"><%= index %></a>
                                 </li>
                                
                             <% } %>
