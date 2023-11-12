@@ -44,12 +44,12 @@
                         <% for( let index = 1; index <= result.totalPages; index++ ) { %>
                             <% if (index === result.page) { %>
                                 <li class="page-item active">
-                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/territories/available?page=<%= index %>" class="page-link"><%= index %></a>
                                 </li>
                                 
                             <% } else { %>
                                 <li class="page-item">
-                                    <a href="/territories?page=<%= index %>" class="page-link"><%= index %></a>
+                                    <a href="/territories/available?page=<%= index %>" class="page-link"><%= index %></a>
                                 </li>
                                
                             <% } %>
