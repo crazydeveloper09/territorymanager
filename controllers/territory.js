@@ -216,7 +216,7 @@ export const searchAllTerritories = (req, res, next) => {
                             {preacher: preacher._id}, 
                             {congregation: req.user._id}
                         ]
-                    })
+                    }, paginationOptions)
                     .then((result) => {
                         Preacher
                             .find({congregation: req.user._id})
@@ -248,7 +248,7 @@ export const searchAllTerritories = (req, res, next) => {
                     {kind: req.query.kind}, 
                     {congregation: req.user._id}
                 ]
-            })
+            }, paginationOptions)
             .then((result) => {
                 Preacher
                     .find({congregation: req.user._id})
