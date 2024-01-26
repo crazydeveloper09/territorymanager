@@ -119,7 +119,13 @@
                                 <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
                                 <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
                                 <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
-                                
+                                <p class="info">Ostatnio opracowane: <strong><%= checkout.record?.lastWorked %></strong></p>
+                                                
+                                                <% if(typeof checkout.preacher !== 'undefined'){ %>
+                                                    
+                                                    <p class="info">Pobrany: <strong><%= checkout.record?.taken %></strong></p>
+                                                    
+                                                <% } %>
                                         
                                                  
                                                 <hr>
