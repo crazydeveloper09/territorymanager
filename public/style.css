@@ -66,6 +66,8 @@ body {
 }
 .card {
     margin-bottom: 90px;
+    padding: 10px;
+    border-radius: 10px;
 }
 .card.city {
     background: #f6edd9;
@@ -144,6 +146,31 @@ thead,
 
 .ministryGroup__item:nth-of-type(2n) {
     background: #d6d6d6;
+}
+
+.preachers-buttons a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #9999CC;
+}
+
+.preachers-buttons a:first-child {
+    margin-right: 7px;
+}
+
+.congregation__icon {
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.territory__icon a {
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+}
+
+.territory__icon a:not(:last-child) {
+    margin-right: 7px;
 }
 
 
@@ -285,5 +312,9 @@ input[type=search]::placeholder {
 
     .preachers-buttons {
         margin-top: 15px;
+    }
+
+    .info {
+        font-size: 17px;
     }
 }

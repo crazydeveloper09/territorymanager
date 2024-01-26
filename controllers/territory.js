@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import node_geocoder from "node-geocoder";
 // import mbxClient from '@mapbox/mapbox-sdk';
 // import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
-import { countDaysFromNow, dateToISOString, escapeRegex } from "../helpers.js";
+import { countDaysFromNow, createCheckout, dateToISOString, escapeRegex } from "../helpers.js";
 
 dotenv.config();
 
@@ -408,47 +408,45 @@ export const renderTerritoryEditForm = (req, res, next) => {
 export const editTerritory = (req, res, next) => {
     Territory
         .findById(req.params.territory_id)
-        .populate("preacher")
         .exec()
         .then((territory) => {
             let record = territory;
-            geocoder.geocode(req.body.territory.location, function (err, data) {
+            geocoder.geocode(req.body.territory.location, async function (err, data) {
                 if (err || !data.length) {
                     req.flash('error', err.message);
                     return res.redirect(`/territories/${req.user._id}/edit`);
                 }
-
-
-                Checkout
-                .create(record.preacher ? { record: record, preacher: record.preacher } : { record: record })
-                .then((createdCheckout) => {
-                    territory.history.push(createdCheckout);
-                    
-                    territory.latitude = data[0].latitude;
-                    territory.longitude = data[0].longitude;
-                    territory.location = data[0].formattedAddress;
-                    territory.city = req.body.territory.city;
-                    territory.street = req.body.territory.street;
-                    territory.number = req.body.territory.number;
-                    territory.description = req.body.territory.description;
-                    territory.taken = req.body.territory.taken;
-                    territory.beginNumber = req.body.territory.beginNumber;
-                    territory.endNumber = req.body.territory.endNumber;
-                    territory.lastWorked = req.body.territory.lastWorked;
-                    territory.kind = req.body.territory.kind;
-                    
-                    territory.isPhysicalCard = req.body.territory.isPhysicalCard === 'true';
-                    if(req.body.territory.preacher === ""){
-                        territory.preacher = undefined;
-                        territory.type = "free";
-                    } else {
-                        territory.preacher = req.body.territory.preacher;
-                        territory.type = undefined;
-                    }
-                    territory.save();
-                    res.redirect(`/territories/${territory._id}`);
-                })
-                .catch((err) => console.log(err))
+        
+                let checkout = territory.preacher?.toString().length !== 0 && req.body.territory.preacher === "" && await createCheckout(territory, req.body);
+            
+        
+                if(checkout){
+                    territory.history.push(checkout);
+                }
+                        
+                        territory.latitude = data[0].latitude;
+                        territory.longitude = data[0].longitude;
+                        territory.location = data[0].formattedAddress;
+                        territory.city = req.body.territory.city;
+                        territory.street = req.body.territory.street;
+                        territory.number = req.body.territory.number;
+                        territory.description = req.body.territory.description;
+                        territory.taken = req.body.territory.taken;
+                        territory.beginNumber = req.body.territory.beginNumber;
+                        territory.endNumber = req.body.territory.endNumber;
+                        territory.lastWorked = req.body.territory.lastWorked;
+                        territory.kind = req.body.territory.kind;
+                        
+                        territory.isPhysicalCard = req.body.territory.isPhysicalCard === 'true';
+                        if(req.body.territory.preacher === ""){
+                            territory.preacher = undefined;
+                            territory.type = "free";
+                        } else {
+                            territory.preacher = req.body.territory.preacher;
+                            territory.type = undefined;
+                        }
+                        territory.save();
+                        res.redirect(`/territories/${territory._id}`);
             });
             
         })

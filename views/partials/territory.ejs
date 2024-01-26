@@ -13,11 +13,25 @@
         </div>
     <% } %>
     <div class="card <%= territory.kind %> <%= !territory.isPhysicalCard && 'noPhysical' %>">
-        <div class="card-title text-center" id="name">
-            <br>
-            Karta terenu nr <%= territory.number %> 
-        </div>
+       
             <div class="card-body">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 id="name">Karta terenu nr <%= territory.number %></h3> 
+                    <div class="territory__icon">
+                        <% if (typeof show === 'undefined') { %>
+                            <a href="/territories/<%= territory._id %>">
+                                <i class="fas fa-calendar"></i>
+                            </a>
+                        <% } %>
+                        
+                            <a href="/territories/<%= territory._id %>/edit">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="/territories/<%= territory._id %>/delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                    </div>
+                </div>
                 <p class="info">Miejscowość: <strong><%= territory.city %></strong></p>
                 <p class="info">Rodzaj: <strong><%= territory.kind %></strong></p>
                 <p class="info">Ulica: 
@@ -46,13 +60,12 @@
                             <span class="text-primary"><%= countDaysFromNow(territory.taken) %></span> dni
                         <% } else if(countDaysFromNow(territory.taken) >= 120){ %>
                             <span class="text-danger"><%= countDaysFromNow(territory.taken) %></span> dni
-                            <br>
-                            <br>
-                            <span class="text-danger"><strong>Przypomnij <%= territory.preacher.name %> o oddaniu terenu</strong> </span>
+                            <span class="badge bg-danger position-absolute" style="top: 65px; right: 15px">Do oddania</span>
+
                         <% } %>
                     </strong></p>
                 <% } else { %>
-                    <p class="info"><strong>Teren oznaczony jako <span class="text-success">wolny</span></strong> </p>
+                    <span class="badge bg-success position-absolute" style="top: 65px; right: 15px">Wolny</span>
                     <p class="info"><strong>Teren nie był opracowywany od 
                             <% if((countDaysFromNow(territory.lastWorked)) < 31){ %>
                                 <%= countDaysFromNow(territory.lastWorked) %> dni
@@ -64,9 +77,9 @@
                                 <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(territory.lastWorked) %></span> dni
                             <% } else if((countDaysFromNow(territory.lastWorked)) >= 124){ %>
                                 <span class="text-danger"><%= countDaysFromNow(territory.lastWorked) %></span> dni
-                                <br>
-                                <br>
-                                <span class="text-danger">Teren musi być ponownie opracowany</span>
+                                
+                                <span class="badge bg-danger position-absolute" style="top: 95px; right: 15px">Do przydzielenia</span>
+                                
                             <% } %>
                     </strong></p>
                 <% } %>
@@ -79,14 +92,7 @@
                     </p>
                 <% } %> 
                 
-                <div class="d-inline">
-                    <% if (typeof show === 'undefined') { %>
-                        <a href="/territories/<%= territory._id %>" class="btn btn-success">Zobacz historię</a>
-                    <% } %>
-                    
-                        <a href="/territories/<%= territory._id %>/edit" class="btn btn-primary">Edytuj</a>
-                        <a href="/territories/<%= territory._id %>/delete" class="btn btn-danger">Usuń</a>
-                </div>
+        
 
                 <% if (typeof show !== 'undefined') { %>
                     <% if (territory.location) { %>
@@ -110,61 +116,12 @@
                         <% territory.history.reverse().forEach((checkout) => { %>
                             <div class="col-lg-12">
                                 <h3 id="name"><%= checkout.date?.toLocaleDateString() %></h3>
-                                <p class="info">Miejscowość: <strong><%= checkout.record?.city %></strong></p>
-                                <p class="info">Rodzaj: <strong><%= checkout.record?.kind %></strong></p>
-                                <p class="info">Ulica: 
-                                    <strong><%= checkout.record?.street %> 
-                                        <% if(typeof checkout.record?.beginNumber !== 'undefined'){ %>
-                                            <%= checkout.record?.beginNumber %> 
-                                                            <% if(typeof checkout.record?.endNumber !== 'undefined'){ %>
-                                                                - <%= checkout.record?.endNumber %>
-                                                            <% } %>
-                                                        <% } %>
-                                                    </strong>
-                                                </p>
-                                                <% if(typeof checkout.record?.description !== 'undefined' && checkout.record?.description !== ''){ %>
-                                                    <p class="info">Opis: <strong><%= checkout.record?.description %></strong></p>
-                                                <% } %>
-                                                
-                                                
-                                                <p class="info">Ostatnio opracowane: <strong><%= checkout.record?.lastWorked %></strong></p>
-                                                
-                                                <% if(typeof checkout.preacher !== 'undefined'){ %>
-                                                    <p class="info">Głosiciel: <strong><%= checkout.preacher?.name %></strong></p>
-                                                    <p class="info">Pobrany: <strong><%= checkout.record?.taken %></strong></p>
-                                                    <p class="info"><strong><%= checkout.preacher?.name %> ma ten teren
-                                                        <% if(countDaysFromNow(checkout.record?.taken) < 90){ %>
-                                                            <%= countDaysFromNow(checkout.record?.taken) %> dni
-                                                        <% } else if(countDaysFromNow(checkout.record?.taken) < 120){ %>
-                                                            <span class="text-primary"><%= countDaysFromNow(checkout.record?.taken) %></span> dni
-                                                        <% } else if(countDaysFromNow(checkout.record?.taken) >= 120){ %>
-                                                            <span class="text-danger"><%= countDaysFromNow(checkout.record?.taken) %></span> dni
-                                                            <br>
-                                                            <br>
-                                                            <span class="text-danger"><strong>Przypomnij <%= checkout.record?.preacher?.name %> o oddaniu terenu</strong> </span>
-                                                        <% } %>
-                                                    </strong></p>
-                                                <% } else { %>
-                                                    <p class="info"><strong>Teren oznaczony jako <span class="text-success">wolny</span></strong> </p>
-                                                    <p class="info"><strong>Teren nie był opracowywany od 
-                                                            <% if(countDaysFromNow(checkout.record?.lastWorked) < 31){ %>
-                                                                <%= countDaysFromNow(checkout.record?.lastWorked) %> dni
-                                                            <% } else if(countDaysFromNow(checkout.record?.lastWorked) < 62){ %>
-                                                                <span class="text-primary"><%= countDaysFromNow(checkout.record?.lastWorked) %></span> dni
-                                                            <% } else if(countDaysFromNow(checkout.record?.lastWorked) < 93){ %>
-                                                                <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(checkout.record?.lastWorked) %></span> dni
-                                                            <% } else if(countDaysFromNow(checkout.record?.lastWorked) >= 124){ %>
-                                                                <span class="text-danger"><%= countDaysFromNow(checkout.record?.lastWorked) %></span> dni
-                                                            <% } %>
-                                                    </strong></p>
-                                                <% } %>
-                                                <% if(!checkout.record?.isPhysicalCard){ %>
-                                                    <p class="info" style="color: #9999CC;">
-                                                        <strong>
-                                                            Teren nie posiada fizycznej karty
-                                                        </strong>
-                                                    </p>
-                                                <% } %> 
+                                <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
+                                <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
+                                <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
+                                
+                                        
+                                                 
                                                 <hr>
                             </div>
                         <% }) %>

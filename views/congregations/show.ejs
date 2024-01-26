@@ -4,14 +4,22 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="text-center"><%= congregation.username %></h1>
+                
+                
                 <% if(success.length > 0){ %>
                     <div class="alert alert-success" role="alert">
                         <%= success %>
                     </div>
                 <% } %>
             </div>
+
         </div>
-        <h2 class="section__title">Ogólne informacje</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 class="section__title">Ogólne informacje</h2>
+            <a href="/congregations/<%=congregation._id %>/edit" style="color: black" class="congregation__icon">
+                <i class="fas fa-pen"></i>
+            </a>
+        </div>
             <div class="row info" style="padding: 0 15px;">
             
                     <div class="col-lg-12 congregation__info">
@@ -36,18 +44,18 @@
 
                     <br>
                     <br>
-                    
+                    <br>
                     
             </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-lg-12">
-                    <a href="/congregations/<%=congregation._id %>/edit" class="btn btn-success">Edytuj</a>
-                    <a href="/congregations/<%=congregation._id %>/ministryGroups/new" class="btn btn-primary">Dodaj grupę służby</a>
-                </div>
-            </div>
+            
             <div class="row">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="section__title">Grupy służby</h2>
+                    <a href="/congregations/<%=congregation._id %>/ministryGroups/new" style="color: black" class="congregation__icon">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
                 
-                <h2 class="section__title">Grupy służby</h2>
                 <% if(ministryGroups?.length === 0){ %>
 
                 <% } else { %>

@@ -1,4 +1,5 @@
 import mailgun from 'mailgun-js';
+import Checkout from './models/checkout.js';
 
 export const isLoggedIn = (req, res, next)  => {
     if(req.isAuthenticated()) {
@@ -42,4 +43,9 @@ export const dateToISOString = (date) => {
     let newDate = new Date();
     newDate.setDate(date);
     return newDate.toISOString().slice(0, 10);
+}
+
+export const createCheckout = async (territory, body) => {
+    const createdCheckout = await Checkout.create({ preacher: territory.preacher, takenDate: territory.taken, passedBackDate: body.territory.lastWorked  })
+    return createdCheckout;
 }

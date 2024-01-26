@@ -39,8 +39,12 @@
                                 <a href="/territories/search?preacher=<%= preacher._id %>" class="preacher__link">Zobacz tereny głosiciela</a>
                             </div>
                             <div class="preachers-buttons">
-                                <a href="/preachers/<%= preacher._id %>/edit" class="btn btn-primary">Edytuj</a>
-                                <a href="/preachers/<%= preacher._id %>/delete" class="btn btn-danger">Usuń</a>
+                                <a href="/preachers/<%= preacher._id %>/edit">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="/preachers/<%= preacher._id %>/delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
