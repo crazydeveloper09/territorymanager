@@ -3,8 +3,11 @@ import { isLoggedIn } from "../helpers.js";
 import {
     confirmDeletingTerritory,
     createTerritory,
+    deleteCheckout,
     deleteTerritory,
+    editCheckout,
     editTerritory,
+    renderCheckoutEditForm,
     renderListOfAllTerritories,
     renderListOfAvailableTerritories,
     renderNewTerritoryForm,
@@ -26,10 +29,13 @@ router.get("/:territory_id/edit", isLoggedIn, renderTerritoryEditForm);
 router.get("/:territory_id", isLoggedIn, renderTerritoryHistory);
 router.get("/:territory_id/delete", isLoggedIn, confirmDeletingTerritory);
 router.get("/available/search", isLoggedIn, searchAvailableTerritories);
+router.get("/:territory_id/checkouts/:checkout_id/edit", isLoggedIn, renderCheckoutEditForm);
+router.get("/:territory_id/checkouts/:checkout_id/delete", isLoggedIn, deleteCheckout);
 
 router.post("/", isLoggedIn, createTerritory);
 
 router.put("/:territory_id", isLoggedIn, editTerritory);
+router.put("/:territory_id/checkouts/:checkout_id", isLoggedIn, editCheckout);
 
 router.delete("/:territory_id", isLoggedIn, deleteTerritory)
 

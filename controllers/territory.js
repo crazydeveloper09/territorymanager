@@ -599,3 +599,42 @@ export const searchChangesByDate = (req, res, next) => {
         })
         .catch((err) => console.log(err))
 }
+
+export const renderCheckoutEditForm = (req, res, next) => {
+    Checkout
+        .findById(req.params.checkout_id)
+        .populate('preacher')
+        .exec()
+        .then((checkout) => {
+            Preacher
+            .find({congregation: req.user._id})
+            .sort({name: 1})
+            .exec()
+            .then((preachers) => {
+                res.render(`./territories/checkoutEdit`, {
+                    checkout,
+                    territoryID: req.params.territory_id,
+                    preachers,
+                    header: 'Edytuj rekord w historii terenu'
+                })
+            })
+            .catch((err) => console.log(err))
+        })
+        .catch((err) => console.log(err))
+}
+
+export const editCheckout = (req, res, next) => {
+    Checkout
+        .findByIdAndUpdate(req.params.checkout_id, req.body.checkout)
+        .exec()
+        .then((updatedCheckout) => res.redirect(`/territories/${req.params.territory_id}`))
+        .catch((err) => console.log(err))
+}
+
+export const deleteCheckout = (req, res, next) => {
+    Checkout
+        .findByIdAndDelete(req.params.checkout_id)
+        .exec()
+        .then((deletedCheckout) => res.redirect(`/territories/${req.params.territory_id}`))
+        .catch((err) => console.log(err))
+}

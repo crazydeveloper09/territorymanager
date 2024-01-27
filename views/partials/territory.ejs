@@ -115,7 +115,35 @@
                         <h2 class="territory-section">Historia</h2>
                         <% territory.history.reverse().forEach((checkout) => { %>
                             <div class="col-lg-12">
-                                <h3 id="name"><%= checkout.date?.toLocaleDateString() %></h3>
+                                <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <h3 id="name">
+                                                <%= checkout.date?.toLocaleDateString() %>
+                                                <span data-bs-toggle="popover" title="Ważna informacja ‼️" data-bs-content="Do poprawnego wyświetlenia tego rekordu edytuj go. Zalecamy robienie tego z papierową kartoteką terenów. Po edycji niepotrzebne rekordy usuń. Podpowiedź: Następny/poprzedni rekord zawiera datę pobrania/opracowania. Wszystko sprawdzaj z kartoteką" style="margin-left: 10px;">
+                                                    <i class="fas fa-circle-info"></i>
+                                                </span>
+                                            </h3>
+                                            
+                                        </div>
+                                        
+                                
+                                        <div class="territory__icon">
+                                            <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/edit">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                            <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/delete">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <% } else { %>
+                                    <h3 id="name">
+                                        <%= checkout.date?.toLocaleDateString() %>
+                                    </h3>
+                                <% } %>
+                                
+                                
                                 <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
                                 <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
                                 <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
