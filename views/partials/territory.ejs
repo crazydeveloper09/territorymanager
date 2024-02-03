@@ -107,61 +107,70 @@
                     <% } %>
                 <% } %>
             </div>
-            <% if(typeof show !== 'undefined') { %>
+            <% if(typeof show !== 'undefined' && territory.history.length !== 0) { %>
                 <br>
                 <br>
                 <div class="card-footer">
                     <div class="row">
                         <h2 class="territory-section">Historia</h2>
-                        <% territory.history.reverse().forEach((checkout) => { %>
+                        <% for(let serviceYear of Object.keys(groupBy(territory.history, 'serviceYear')).reverse()) { %>
                             <div class="col-lg-12">
-                                <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <h3 id="name">
-                                                <%= checkout.date?.toLocaleDateString() %>
-                                                <span data-bs-toggle="popover" title="Ważna informacja ‼️" data-bs-content="Do poprawnego wyświetlenia tego rekordu edytuj go. Zalecamy robienie tego z papierową kartoteką terenów. Po edycji niepotrzebne rekordy usuń. Podpowiedź: Następny/poprzedni rekord zawiera datę pobrania/opracowania. Wszystko sprawdzaj z kartoteką" style="margin-left: 10px;">
-                                                    <i class="fas fa-circle-info"></i>
-                                                </span>
-                                            </h3>
-                                            
-                                        </div>
-                                        
-                                
-                                        <div class="territory__icon">
-                                            <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/edit">
-                                                <i class="fas fa-pen"></i>
-                                            </a>
-                                            <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/delete">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                <% } else { %>
-                                    <h3 id="name">
-                                        <%= checkout.date?.toLocaleDateString() %>
-                                    </h3>
-                                <% } %>
-                                
-                                
-                                <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
-                                <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
-                                <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
-                                <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
-                                    <p class="info">Ostatnio opracowane: <strong><%= checkout.record?.lastWorked %></strong></p>
+                                <h3 id="name" style="font-size: 23px; margin: 10px 0;">Rok służbowy <%= serviceYear %></h3>
+                                <hr style="border: 1px solid black; background-color: black;">
+                                <% groupBy(territory.history, 'serviceYear')[serviceYear].reverse().forEach((checkout) => { %>
+                                    
+                                    <div>
+                                        <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <div>
+                                                    <h4 id="name">
+                                                        <%= checkout.date?.toLocaleDateString() %>
+                                                        <span data-bs-toggle="popover" title="Ważna informacja ‼️" data-bs-content="Do poprawnego wyświetlenia tego rekordu edytuj go. Zalecamy robienie tego z papierową kartoteką terenów. Po edycji niepotrzebne rekordy usuń. Podpowiedź: Następny/poprzedni rekord zawiera datę pobrania/opracowania. Wszystko sprawdzaj z kartoteką" style="margin-left: 10px;">
+                                                            <i class="fas fa-circle-info"></i>
+                                                        </span>
+                                                    </h4>
+                                                    
+                                                </div>
                                                 
-                                                <% if(typeof checkout.preacher !== 'undefined'){ %>
-                                                    
-                                                    <p class="info">Pobrany: <strong><%= checkout.record?.taken %></strong></p>
-                                                    
-                                                <% } %>
-                                <% } %>
-                                
                                         
-                                                 
-                                                <hr>
+                                                <div class="territory__icon">
+                                                    <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/edit">
+                                                        <i class="fas fa-pen"></i>
+                                                    </a>
+                                                    <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        <% } else { %>
+                                            <h4 id="name">
+                                                <%= checkout.date?.toLocaleDateString() %>
+                                            </h4>
+                                        <% } %>
+                                        
+                                        
+                                        <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
+                                        <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
+                                        <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
+                                        
+                                        <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
+                                            <p class="info">Ostatnio opracowane: <strong><%= checkout.record?.lastWorked %></strong></p>
+                                                        
+                                                        <% if(typeof checkout.preacher !== 'undefined'){ %>
+                                                            
+                                                            <p class="info">Pobrany: <strong><%= checkout.record?.taken %></strong></p>
+                                                            
+                                                        <% } %>
+                                        <% } %>
+                                        
+                                                
+                                                         
+                                                        <hr>
+                                    </div>
+                                <% }) %>
                             </div>
-                        <% }) %>
+                        <% } %>
+                        
                     </div>
                    
                 </div>

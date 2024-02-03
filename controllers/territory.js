@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import node_geocoder from "node-geocoder";
 // import mbxClient from '@mapbox/mapbox-sdk';
 // import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
-import { countDaysFromNow, createCheckout, dateToISOString, escapeRegex } from "../helpers.js";
+import { countDaysFromNow, createCheckout, dateToISOString, escapeRegex, groupBy } from "../helpers.js";
 
 dotenv.config();
 
@@ -46,15 +46,17 @@ export const renderListOfAllTerritories = (req, res, next) => {
                 .sort({name: 1})
                 .exec()
                 .then((preachers) => {
-                    res.render("./territories/index", {
-                        currentUser: req.user, 
-                        result, 
-                        preachers: preachers,
-                        countDaysFromNow: countDaysFromNow,
-                        dateToISOString: dateToISOString, 
-                        header: "Wszystkie tereny | Territory Manager", 
-                        all: "" 
-                    });
+                
+                            res.render("./territories/index", {
+                                currentUser: req.user, 
+                                result, 
+                                preachers: preachers,
+                                countDaysFromNow: countDaysFromNow,
+                                dateToISOString: dateToISOString, 
+                                header: "Wszystkie tereny | Territory Manager", 
+                                all: "" 
+                            });
+                
                 })
                 .catch((err) => console.log(err))
         })
@@ -373,6 +375,7 @@ export const renderTerritoryHistory = (req, res, next) => {
                         countDaysFromNow: countDaysFromNow,
                         currentUser: req.user,
                         currentIndex: currentIndex,
+                        groupBy,
                         territories: territories
                     })
                 })
