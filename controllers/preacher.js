@@ -93,7 +93,7 @@ export const deletePreacher = (req, res, next) => {
                         .find({ preacher: preacher._id })
                         .exec()
                         .then(async (checkouts) => {
-                          
+                        
                                 if(checkouts.length === 0){
                                     res.redirect("/preachers")
                                 } else {    
