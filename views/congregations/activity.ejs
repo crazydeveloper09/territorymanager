@@ -19,7 +19,7 @@
                             <tr class="text-center">
                                 <td><%= activity.date.toLocaleString() %></td>
                                 <td><%= activity.ipAddress %></td>
-                                <td><%= activity.platform.trim() %></td>
+                                <td><%= activity?.platform?.trim() %></td>
                                 <td><%= activity.userAgent %></td>
                                 <td><%= activity.applicationType %></td>
                             </tr>
