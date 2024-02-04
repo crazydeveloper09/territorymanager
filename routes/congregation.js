@@ -1,6 +1,7 @@
 import express from "express";
 import {
     editCongregation,
+    getAllCongregationActivities,
     registerCongregation,
     renderCongregationInfo,
     renderEditCongregationForm,
@@ -21,6 +22,7 @@ router.get("/:congregation_id", isLoggedIn, renderCongregationInfo);
 router.get("/:congregation_id/edit", isLoggedIn, renderEditCongregationForm);
 router.get("/:congregation_id/verification", renderVerificationForm);
 router.get("/:congregation_id/two-factor", renderTwoFactorForm);
+router.get("/:congregation_id/activities", isLoggedIn, getAllCongregationActivities);
 
 router.post("/", registerCongregation);
 router.post("/:congregation_id/resend/verification", resendVerificationCode);

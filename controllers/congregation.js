@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import node_geocoder from "node-geocoder";
 import methodOverride from "method-override";
 import { sendEmail } from "../helpers.js";
-import ministryGroup from "../models/ministryGroup.js";
+import Activity from "../models/activity.js";
 
 dotenv.config();
 
@@ -293,3 +293,15 @@ export const resendTwoFactorCode = (req, res, next) => {
         })
         .catch((err) => console.log(err))
 }
+
+export const getAllCongregationActivities = (req, res, next) => [
+    Activity
+        .find({ congregation: req.params.congregation_id })
+        .exec()
+        .then((activities) => res.render('./congregations/activity', {
+            activities,
+            header: 'Aktywności logowania | Territory Manager',
+            currentUser: req.user
+        }))
+        .catch((err) => console.log(err))
+]

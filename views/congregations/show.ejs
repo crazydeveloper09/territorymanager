@@ -2,17 +2,19 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="text-center"><%= congregation.username %></h1>
+                <a href="/congregations/<%= congregation._id %>/activities" style="color: #28a745;" class="congregation__icon">
+                    <i class="fas fa-shield-halved"></i>
+                </a>
                 
                 
-                <% if(success.length > 0){ %>
-                    <div class="alert alert-success" role="alert">
-                        <%= success %>
-                    </div>
-                <% } %>
             </div>
-
+            <% if(success.length > 0){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="section__title">Ogólne informacje</h2>
