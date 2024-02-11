@@ -4,8 +4,10 @@ import passport from "passport";
 import methodOverride from "method-override";
 import { sendEmail } from "../helpers.js";
 import Activity from "../models/activity.js";
+import ipWare from 'ipware'
 
 const app = express();
+const getIP = ipWare().get_ip;
 
 app.use(flash());
 app.use(methodOverride("_method"));
@@ -15,9 +17,10 @@ export const redirectToLogin = (req, res, next) => {
 }
 
 export const renderLoginForm = (req, res, next) => {
+    let ipInfo = getIP(req);
     res.render("login", {
         header: "Logowanie | Territory Manager",
-        req
+        ipInfo
     });
 }
 

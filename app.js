@@ -23,6 +23,7 @@ export const __dirname = path.dirname(__filename);
 const app = express();
 
 app.set("view engine", "ejs");
+app.set("trust proxy", true)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
