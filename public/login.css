@@ -76,6 +76,10 @@ box-shadow: 0 0 53px 12px #1c7330;
   #form1 {
       margin: 4%;
   }
+
+  #form1 img {
+    width: 100%;
+  }
   body {
     padding: 20px;
     background: #28a745;

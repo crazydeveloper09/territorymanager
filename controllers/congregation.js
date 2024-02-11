@@ -294,7 +294,7 @@ export const resendTwoFactorCode = (req, res, next) => {
         .catch((err) => console.log(err))
 }
 
-export const getAllCongregationActivities = (req, res, next) => [
+export const getAllCongregationActivities = (req, res, next) => {
     Activity
         .find({ congregation: req.params.congregation_id })
         .exec()
@@ -304,4 +304,5 @@ export const getAllCongregationActivities = (req, res, next) => [
             currentUser: req.user
         }))
         .catch((err) => console.log(err))
-]
+}
+    

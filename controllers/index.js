@@ -16,7 +16,8 @@ export const redirectToLogin = (req, res, next) => {
 
 export const renderLoginForm = (req, res, next) => {
     res.render("login", {
-        header: "Logowanie | Territory Manager"
+        header: "Logowanie | Territory Manager",
+        req
     });
 }
 
@@ -35,9 +36,8 @@ export const authenticateCongregation = (req, res, next) => {
         }
         if(user.verificated){
             req.logIn(user, async function (err) {
-        
                 if (err) { return next(err); }
-                console.log(req.ip, req.header('sec-ch-ua-platform'), req.header('user-agent'))
+                console.log(ip, req.header('sec-ch-ua-platform'), req.header('user-agent'))
                 await Activity.create({ipAddress: req.ip, platform: req.header('sec-ch-ua-platform'), userAgent: req.header('user-agent'), applicationType: 'Aplikacja internetowa', congregation: user._id})
                 let verificationCode = '';
                 for (let i = 0; i <= 5; i++) {
