@@ -6,8 +6,11 @@ import methodOverride from "method-override";
 import ejs from 'ejs';
 import pdf from 'html-pdf';
 import path from 'path';
+import dotenv from 'dotenv';
 import { __dirname } from "../app.js";
 const app = express();
+
+dotenv.config();
 
 app.use(flash());
 app.use(methodOverride("_method"))
@@ -29,8 +32,21 @@ export const generateListOfMinistryGroups = (req, res, next) => {
                 const title = data.currentUser.username.split(" ").join("-");
                 const DOWNLOAD_DIR = path.join(process.env.HOME || process.env.USERPROFILE, 'downloads/')
 
-
-                var options = { format: 'A4', orientation: 'landscape', timeout: 540000 };
+                console.log(process.env.DEVELOPMENT_MODE)
+                const childProcessOptions = process.env.DEVELOPMENT_MODE === 'production' ?  {
+                    childProcessOptions: {
+                        env: {
+                            OPENSSL_CONF: '/dev/null',
+                        },
+                    }
+                } : {};
+                console.log(childProcessOptions)
+                var options = { 
+                    format: 'A4', 
+                    orientation: 'landscape', 
+                    timeout: 540000,
+                    ...childProcessOptions
+                };
 
                 pdf.create(str, options).toFile(`${DOWNLOAD_DIR}Grupy_sluzby_${title}.pdf`, function(err, data) {
                     if (err) return console.log(err);
