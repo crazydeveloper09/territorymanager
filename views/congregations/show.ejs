@@ -100,6 +100,14 @@
                 <% } %>
                 <a href="/congregations/<%=congregation._id %>/ministryGroups/generate-pdf" class="btn btn-primary">Generuj grupy do druku</a>
             </div>
+            <h2 class="section__title">Statystyki terenowe</h2>
+            <p id="chartLabels" class="d-none"><%= territories.sort((a, b) => a.number - b.number).map((territory) => 'Teren nr ' + territory.number + ' - ' + territory.kind) %></p>
+            <p id="chartValues" class="d-none"><%= territories.sort((a, b) => a.number - b.number).map((territory) => territory.history.length) %></p>
+            <div style="overflow-x: scroll">
+                <div class="chart__container">
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
             <h2 class="section__title">Mapka</h2>
             <% if (congregation.mainCity) { %>
                 <p id="lat" style="display: none;"><%= congregation.mainCityLatitude %></p>
@@ -144,5 +152,35 @@
         }
       </script>
       <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKvmIASZjDfZNXZZn2fa4pGvR6T3cQTcA&callback=initMap"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  const chartLabels = document.getElementById('chartLabels').innerText.split(',');
+  const chartValues = document.getElementById('chartValues').innerText.split(',');
+  console.log(chartLabels)
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Ilość opracowania terenu od września 2022',
+        data: chartValues,
+        borderWidth: 8,
+        color: '#28a745'
+      }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 
 <%- include("../partials/footer") %>

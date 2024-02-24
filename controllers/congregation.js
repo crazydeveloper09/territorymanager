@@ -8,6 +8,7 @@ import node_geocoder from "node-geocoder";
 import methodOverride from "method-override";
 import { sendEmail } from "../helpers.js";
 import Activity from "../models/activity.js";
+import Territory from "../models/territory.js";
 
 dotenv.config();
 
@@ -90,12 +91,21 @@ export const renderCongregationInfo = (req, res, next) => {
                 .populate(["preachers", "overseer"])
                 .exec()
                 .then((ministryGroups) => {
-                    res.render("./congregations/show", {
-                        header: `Zbór ${congregation.username} | Territory Manager`,
-                        congregation,
-                        currentUser: req.user,
-                        ministryGroups
-                    })
+                    Territory
+                        .find({ congregation: congregation._id })
+                        .populate("history")
+                        .exec()
+                        .then((territories) => {
+                            res.render("./congregations/show", {
+                                header: `Zbór ${congregation.username} | Territory Manager`,
+                                congregation,
+                                currentUser: req.user,
+                                ministryGroups,
+                                territories
+                            })
+                        })
+                        .catch((err) => console.log(err))
+                    
                 })
                 .catch((err) => console.log(err))
         })
