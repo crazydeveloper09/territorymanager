@@ -273,6 +273,34 @@ input[type=search]::placeholder {
     margin-bottom: 5px;
 }
 
+.button {
+    width: 100%;
+    margin-bottom: 15px;
+    font-weight: 700;
+    
+  }
+  
+  .btn-golden {
+    background: #f6b26b;
+    border-color: #f6b26b;
+  }
+  
+  .btn-green {
+    background: #28a745;
+    border-color: #28a745;
+  }
+
+  .accordion-item,
+  .accordion-header,
+  .accordion-button {
+    background: transparent;
+    border: none;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+
 
 @media (max-width: 572px) {
     body {

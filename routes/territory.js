@@ -1,12 +1,14 @@
 import express from "express";
 import { isLoggedIn } from "../helpers.js";
 import {
+    assignTerritory,
     confirmDeletingTerritory,
     createTerritory,
     deleteCheckout,
     deleteTerritory,
     editCheckout,
     editTerritory,
+    makeTerritoryFreeAgain,
     renderCheckoutEditForm,
     renderListOfAllTerritories,
     renderListOfAvailableTerritories,
@@ -33,6 +35,8 @@ router.get("/:territory_id/checkouts/:checkout_id/edit", isLoggedIn, renderCheck
 router.get("/:territory_id/checkouts/:checkout_id/delete", isLoggedIn, deleteCheckout);
 
 router.post("/", isLoggedIn, createTerritory);
+router.post("/:territory_id/assign", isLoggedIn, assignTerritory);
+router.post("/:territory_id/makeFree", isLoggedIn, makeTerritoryFreeAgain);
 
 router.put("/:territory_id", isLoggedIn, editTerritory);
 router.put("/:territory_id/checkouts/:checkout_id", isLoggedIn, editCheckout);

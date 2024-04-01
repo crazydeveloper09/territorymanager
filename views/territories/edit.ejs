@@ -102,46 +102,7 @@
                                 </label>
                                 
                             </div>
-                            <div class="form-floating mb-3">
-                       
-                                <input type="date" name="territory[lastWorked]" id="lastWorked" value="<%= territory.lastWorked %>" class="form-control">
-                                <label for="lastWorked" class="username">
-                                    Edytuj datę ostatnio pracowane
-                                    
-                                </label>
-                                
-                            </div>
-                            
-                            
-                            <div class="form-floating mb-3">
-                       
-                                <select name="territory[preacher]" id="preacher" class="form-select">
-                                    <% if(typeof territory.preacher !== 'undefined'){ %>
-                                        <option value="<%= territory.preacher._id %>" ><%= territory.preacher.name %></option>
-                                    <% } %>
-                                   
-                                    <option value="">Wolny teren</option>
-                                    
-                                    <% for(let i=0; i<preachers.length;i++){ %>
-                                        <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
-                                    <% } %>
-                                </select>
-                                <label for="description" class="username">
-                                    Edytuj lub wybierz głosiciela
-                                    
-                                </label>
-                                
-                            </div>
-                            
-                            <div class="form-floating mb-3">
-                       
-                                <input type="date" name="territory[taken]" id="taken" value="<%= territory.taken %>" class="form-control">
-                                <label for="taken" class="username">
-                                    Edytuj datę kiedy wzięty
-                                    
-                                </label>
-                                
-                            </div>
+                           
                             
                             
                           

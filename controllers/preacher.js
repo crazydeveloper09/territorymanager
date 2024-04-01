@@ -75,6 +75,48 @@ export const editPreacher = (req, res, next) => {
         .catch((err) => console.log(err))
 }
 
+export const getInfoAboutPreacher = (req, res, next) => {
+    Preacher
+        .findById(req.params.preacher_id)
+        .exec()
+        .then((preacher) => {
+            Territory
+                .find({
+                    $and: [
+                        {preacher: preacher._id}, 
+                        {congregation: req.user._id}
+                    ]
+                })
+                .populate("preacher")
+                .exec()
+                .then((preacherTerritories) => {
+                    Territory
+                        .find({ $and: [{congregation: req.user._id}, {type: 'free'}]})
+                        .populate(["preacher", "history", {
+                            path: "history",
+                            populate: {
+                                path: "preacher",
+                                model: "Preacher"
+                            }
+                        }])
+                        .sort({lastWorked: 1})
+                        .exec()
+                        .then((availableTerritories) => {
+                            res.render("./preachers/show", {
+                                preacher,
+                                preacherTerritories,
+                                availableTerritories,
+                                currentUser: req.user,
+                                header: `${preacher.name} | ${req.user.username} | Territory Manager`
+                            })
+                        })
+                        .catch((err) => console.log(err))
+                })
+                .catch((err) => console.log(err))
+        })
+        .catch((err) => console.log(err))
+}
+
 export const deletePreacher = (req, res, next) => {
     Preacher
         .findByIdAndDelete(req.params.preacher_id)

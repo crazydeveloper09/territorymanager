@@ -76,11 +76,13 @@ export const renderListOfAvailableTerritories = (req, res, next) => {
         .then((territories) => {
             Territory
                 .paginate({ $and: [{congregation: req.user._id}, {type: 'free'}]}, paginationOptions)
-                .then((result) => {
+                .then(async (result) => {
+                    const preachers = await Preacher.find({congregation: req.user._id}).exec();
                     res.render("index", {
                         currentUser: req.user, 
                         territories: territories,
                         result,
+                        preachers,
                         countDaysFromNow: countDaysFromNow, 
                         header: "Home | Territory Manager", 
                         home: ""
@@ -90,6 +92,44 @@ export const renderListOfAvailableTerritories = (req, res, next) => {
         })
         .catch((err) => console.log(err))
 }
+
+export const assignTerritory = (req, res, next) => {
+    Territory
+        .findById(req.params.territory_id)
+        .exec()
+        .then((territory) => {
+            const taken = new Date();
+            territory.taken = taken;
+            territory.preacher = req.body.preacher;
+            territory.type = undefined;
+            
+            territory.save();
+            res.redirect(`/territories/${territory._id}`)
+        })
+        .catch((err) => console.log(err))
+}
+
+export const makeTerritoryFreeAgain = (req, res, next) => {
+    Territory
+        .findById(req.params.territory_id)
+        .exec()
+        .then(async (territory) => {
+            const lastWorked = new Date(req.body.lastWorked);
+            let checkout = await createCheckout(territory, req.body);
+        
+            if(checkout){
+                territory.history.push(checkout);
+            }
+            territory.lastWorked = lastWorked;
+            territory.preacher = undefined;
+            territory.type = "free";
+            
+            territory.save();
+            res.redirect(`/territories/${territory._id}`)
+        })
+        .catch((err) => console.log(err))
+}
+
 
 export const renderNewTerritoryForm = (req, res, next) => {
     Preacher
@@ -367,8 +407,9 @@ export const renderTerritoryHistory = (req, res, next) => {
             Territory
                 .find({congregation: req.user._id})
                 .exec()
-                .then((territories) => {
+                .then(async (territories) => {
                     const currentIndex = territories.findIndex(t => t._id.toString() === territory._id.toString());
+                    const preachers = await Preacher.find({congregation: req.user._id}).exec();
                     res.render("./territories/show", {
                         header: `Teren nr ${territory.number} | Territory Manager`,
                         territory: territory,
@@ -376,6 +417,7 @@ export const renderTerritoryHistory = (req, res, next) => {
                         currentUser: req.user,
                         currentIndex: currentIndex,
                         groupBy,
+                        preachers,
                         territories: territories
                     })
                 })
@@ -391,19 +433,13 @@ export const renderTerritoryEditForm = (req, res, next) => {
         .populate("preacher")
         .exec()
         .then((territory) => {
-            Preacher
-                .find({congregation: req.user._id})
-                .sort({name: 1})
-                .exec()
-                .then((preachers) => {
+            
                     res.render("./territories/edit", { 
                         currentUser: req.user, 
                         territory: territory, 
-                        preachers: preachers, 
                         header: `Edytuj teren nr ${territory?.number} zboru ${req.user.username} | Territory Manager`
                     });
-                })
-                .catch((err) => console.log(err))
+                
         })
         .catch((err) => console.log(err))
 }
@@ -419,14 +455,7 @@ export const editTerritory = (req, res, next) => {
                     req.flash('error', err.message);
                     return res.redirect(`/territories/${req.user._id}/edit`);
                 }
-        
-                let checkout = territory.preacher?.toString().length !== 0 && req.body.territory.preacher === "" && await createCheckout(territory, req.body);
-            
-        
-                if(checkout){
-                    territory.history.push(checkout);
-                }
-                        
+       
                         territory.latitude = data[0].latitude;
                         territory.longitude = data[0].longitude;
                         territory.location = data[0].formattedAddress;
@@ -434,20 +463,14 @@ export const editTerritory = (req, res, next) => {
                         territory.street = req.body.territory.street;
                         territory.number = req.body.territory.number;
                         territory.description = req.body.territory.description;
-                        territory.taken = req.body.territory.taken;
+                       
                         territory.beginNumber = req.body.territory.beginNumber;
                         territory.endNumber = req.body.territory.endNumber;
-                        territory.lastWorked = req.body.territory.lastWorked;
+                    
                         territory.kind = req.body.territory.kind;
                         
                         territory.isPhysicalCard = req.body.territory.isPhysicalCard === 'true';
-                        if(req.body.territory.preacher === ""){
-                            territory.preacher = undefined;
-                            territory.type = "free";
-                        } else {
-                            territory.preacher = req.body.territory.preacher;
-                            territory.type = undefined;
-                        }
+                       
                         territory.save();
                         res.redirect(`/territories/${territory._id}`);
             });
@@ -492,11 +515,13 @@ export const searchAvailableTerritories = (req, res, next) => {
             .sort({number: 1})
             .populate("preacher")
             .exec()
-            .then((territories) => {
+            .then(async (territories) => {
+                const preachers = await Preacher.find({congregation: req.user._id}).exec();
                 res.render("./territories/availableSearch", {
                     param: req.query.city, 
                     territories: territories, 
                     currentUser: req.user,
+                    preachers,
                     countDaysFromNow: countDaysFromNow, 
                     header: "Wyszukiwanie wolnych terenów po miejscowości | Territory Manager"
                 });
@@ -515,11 +540,13 @@ export const searchAvailableTerritories = (req, res, next) => {
             .sort({number: 1})
             .populate("preacher")
             .exec()
-            .then((territories) => {
+            .then(async (territories) => {
+                const preachers = await Preacher.find({congregation: req.user._id}).exec();
                 res.render("./territories/availableSearch", {
                     param: req.query.street, 
                     territories: territories, 
                     currentUser: req.user, 
+                    preachers,
                     countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po ulicy | Territory Manager"
                 });
@@ -538,11 +565,13 @@ export const searchAvailableTerritories = (req, res, next) => {
             .sort({number: 1})
             .populate("preacher")
             .exec()
-            .then((territories) => {
+            .then(async (territories) => {
+                const preachers = await Preacher.find({congregation: req.user._id}).exec();
                 res.render("./territories/availableSearch", {
                     param: req.query.number, 
                     territories: territories, 
                     currentUser: req.user, 
+                    preachers,
                     countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"
                 });
@@ -560,11 +589,13 @@ export const searchAvailableTerritories = (req, res, next) => {
             .sort({number: 1})
             .populate("preacher")
             .exec()
-            .then((territories) => {
+            .then(async (territories) => {
+                const preachers = await Preacher.find({congregation: req.user._id}).exec();
                 res.render("./territories/availableSearch", {
                     param: req.query.kind, 
                     territories: territories, 
                     currentUser: req.user, 
+                    preachers,
                     countDaysFromNow: countDaysFromNow,
                     header: "Wyszukiwanie wolnych terenów po nr terenu | Territory Manager"
                 });

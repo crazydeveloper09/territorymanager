@@ -49,10 +49,10 @@
                 <% } %>
                 
             
-                <p class="info">Ostatnio opracowane: <strong><%= territory.lastWorked %></strong></p>
+                <p class="info">Ostatnio opracowane: <strong><%= new Date(territory.lastWorked).toLocaleDateString() %></strong></p>
                 <% if(territory?.preacher){ %>
                     <p class="info">Głosiciel: <strong><%= territory.preacher.name %></strong></p>
-                    <p class="info">Pobrany: <strong><%= territory.taken %></strong></p>
+                    <p class="info">Pobrany: <strong><%= new Date(territory.taken).toLocaleDateString() %></strong></p>
                     <p class="info"><strong><%= territory.preacher.name %> ma ten teren
                         <% if(countDaysFromNow(territory.taken) < 90){ %>
                             <%= countDaysFromNow(territory.taken) %> dni
@@ -91,6 +91,70 @@
                         </strong>
                     </p>
                 <% } %> 
+
+                <% if (territory.preacher) { %>
+                    <div class="accordion" id="territoryAssignment__<%= territory._id %>">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingOne_<%= territory._id %>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_<%= territory._id %>" aria-expanded="false" aria-controls="collapseOne_<%= territory._id %>">
+                              Zdaj teren
+                            </button>
+                          </h2>
+                          <div id="collapseOne_<%= territory._id %>" class="accordion-collapse collapse" aria-labelledby="headingOne_<%= territory._id %>" data-bs-parent="#territoryAssignment__<%= territory._id %>">
+                            <div class="accordion-body">
+                                <form action="/territories/<%= territory._id %>/makeFree" method="post">
+                                    <div class="form-floating mb-3">
+                       
+                                        <input type="date" name="lastWorked" id="lastWorked" value="<%= territory.lastWorked %>" class="form-control">
+                                        <label for="lastWorked" class="username">
+                                            Ostatnio pracowane
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    <input type="submit" value="Zdaj teren" class="btn btn-success button btn-green">
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                        
+                    </div>
+                <% } else { %>
+                    <div class="accordion" id="territoryAssignment__<%= territory._id %>">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingOne_<%= territory._id %>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_<%= territory._id %>" aria-expanded="false" aria-controls="collapseOne_<%= territory._id %>">
+                              Przydziel teren
+                            </button>
+                          </h2>
+                          <div id="collapseOne_<%= territory._id %>" class="accordion-collapse collapse" aria-labelledby="headingOne_<%= territory._id %>" data-bs-parent="#territoryAssignment__<%= territory._id %>">
+                            <div class="accordion-body">
+                                <form action="/territories/<%= territory._id %>/assign" method="post">
+                                    <div class="form-floating mb-3">
+                       
+                                        <select name="preacher" id="preacher" class="form-control">
+                                            
+                                        
+        
+                                            <% for(let i=0; i<preachers.length;i++){ %>
+                                                <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
+                                            <% } %>
+                                        </select>
+                                        <label for="preacher" class="username">
+                                            Wybierz głosiciela
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    <input type="submit" value="Przydziel teren" class="btn btn-success button btn-green">
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+                <% } %>
                 
         
 

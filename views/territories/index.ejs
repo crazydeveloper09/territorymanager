@@ -43,6 +43,7 @@
                 </div>
             </div>
         <% } %>
+        
         <% if(result.docs.length===0){ %>
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-12">
@@ -54,7 +55,7 @@
         <% } else { %>
             <div class="row" style="padding-bottom: 80px;">
                 <% result.docs.forEach((territory) => { %>
-                    <%- include("../partials/territory", {territory: territory}) %>
+                    <%- include("../partials/territory", {territory: territory, preachers}) %>
                 <% }) %>
                 <nav>
                     <ul class="pagination justify-content-center">

@@ -48,7 +48,7 @@ export const dateToISOString = (date) => {
 export const createCheckout = async (territory, body) => {
     let date = new Date();
     const serviceYear = date.getMonth() <= 7 ? date.getFullYear() : date.getFullYear() + 1;
-    const createdCheckout = await Checkout.create({ preacher: territory.preacher, takenDate: territory.taken, passedBackDate: body.territory.lastWorked, serviceYear  })
+    const createdCheckout = await Checkout.create({ preacher: territory.preacher, takenDate: territory.taken, passedBackDate: body.lastWorked, serviceYear  })
     return createdCheckout;
 }
 

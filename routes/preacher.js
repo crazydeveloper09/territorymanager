@@ -5,6 +5,7 @@ import {
     createPreacher,
     deletePreacher,
     editPreacher,
+    getInfoAboutPreacher,
     renderListOfPreachers,
     renderNewPreacherForm,
     renderPreacherEditForm,
@@ -18,6 +19,7 @@ router.get("/new", isLoggedIn, renderNewPreacherForm);
 router.get("/:preacher_id/edit", isLoggedIn, renderPreacherEditForm);
 router.get("/:preacher_id/delete", isLoggedIn, confirmDeletingPreacher);
 router.get("/search", isLoggedIn, searchPreachers);
+router.get("/:preacher_id", isLoggedIn, getInfoAboutPreacher);
 
 router.post("/", isLoggedIn, createPreacher);
 
